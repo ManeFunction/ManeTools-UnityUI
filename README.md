@@ -6,7 +6,7 @@ Custom controls and extensions for Unity UI package (`uGUI`).
 
 ## Features
 
-// TODO:
+- `ColorScheme`
 
 Almost all public API methods are covered with NUnit tests.
 

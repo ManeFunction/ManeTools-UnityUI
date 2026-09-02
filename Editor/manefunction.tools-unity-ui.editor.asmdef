@@ -1,0 +1,18 @@
+{
+    "name": "manefunction.tools-unity-ui.editor",
+    "rootNamespace": "Mane.Tools.UI.Editor",
+    "references": [
+        "GUID:4831a9b59b7de44bdb6e154c6ee8d4aa"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

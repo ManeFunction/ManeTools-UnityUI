@@ -1,0 +1,129 @@
+/* Outer inspector block */
+.scheme-block {
+    border-width: 1px;
+    border-color: #555;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.scheme-block .unity-base-field__label {
+    flex-basis: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 150px;
+}
+
+/* Empty-state warning */
+.message-box {
+    border-width: 1px;
+    border-color: #555;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 5px;
+}
+
+.message-icon {
+    width: 16px;
+    height: 16px;
+    background-image: resource("icons/console.warnicon.png");
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+
+.message-box-label {
+    flex-grow: 1;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding-right: 20px;
+    text-overflow: ellipsis;
+    -unity-overflow-clip-box: padding-box;
+}
+
+.colors-container {
+    margin-top: 5px;
+}
+
+.color-group {
+    margin-bottom: 2px;
+}
+
+/* One graphic slot: [color/branch | object field | +/-] */
+.graphic-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1px;
+}
+
+.lead {
+    width: 40px;
+    min-width: 40px;
+    flex-shrink: 0;
+    margin-right: 2px;
+}
+
+.lead .unity-color-field {
+    width: 40px;
+    min-width: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.lead .unity-base-field__label {
+    display: none;
+    width: 0;
+    min-width: 0;
+    margin: 0;
+}
+
+.branch-label {
+    width: 40px;
+    color: #888;
+    font-size: 12px;
+    -unity-text-align: middle-right;
+    padding-right: 4px;
+}
+
+.graphic-field-slot {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    margin: 0 2px 0 0;
+}
+
+.graphic-field {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    min-width: 0;
+}
+
+.graphic-field .unity-base-field__label {
+    display: none;
+    width: 0;
+    min-width: 0;
+    margin: 0;
+}
+
+.row-button {
+    width: 20px;
+    min-width: 20px;
+    height: 18px;
+    flex-shrink: 0;
+    padding: 0;
+    margin: 0;
+    border-width: 1px;
+    border-color: #555;
+    background-color: #333;
+    color: #fff;
+}
+
+.row-button:hover {
+    background-color: #444;
+}
+
+.row-button:active {
+    background-color: #555;
+}

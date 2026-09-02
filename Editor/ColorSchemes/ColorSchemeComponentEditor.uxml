@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements"
+         xmlns:uie="UnityEditor.UIElements"
+         editor-extension-mode="True">
+
+    <Style src="ColorSchemeComponentEditor.uss" />
+
+    <ui:VisualElement class="scheme-block">
+        <uie:PropertyField name="colorSchemeField" binding-path="_colorScheme" label="Color Scheme" />
+        <ui:VisualElement name="emptyBox" class="message-box">
+            <ui:Image class="message-icon" />
+            <ui:Label name="emptyBoxLabel" class="message-box-label"
+                      text="Assign a Color Scheme to map its colors to graphics." />
+        </ui:VisualElement>
+        <ui:VisualElement name="colorsContainer" class="colors-container" />
+    </ui:VisualElement>
+</ui:UXML>
