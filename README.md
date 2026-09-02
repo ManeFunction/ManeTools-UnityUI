@@ -7,6 +7,7 @@ Custom controls and extensions for Unity UI package (`uGUI`).
 ## Features
 
 - `ColorScheme`
+- `ScrollRect` snapping extensions.
 
 Almost all public API methods are covered with NUnit tests.
 
