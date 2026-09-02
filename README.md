@@ -2,12 +2,13 @@
 
 Custom controls and extensions for Unity UI package (`uGUI`).
 
-// This package is dependent on [ManeTools-dotNET](https://github.com/ManeFunction/ManeTools-dotNet.git).
+This package is dependent on [ManeTools-Unity](https://github.com/ManeFunction/ManeTools-Unity.git).
 
 ## Features
 
-- `ColorScheme`
+- `ColorScheme`.
 - `ScrollRect` snapping extensions.
+- `MaxTMProSize`.
 
 Almost all public API methods are covered with NUnit tests.
 
