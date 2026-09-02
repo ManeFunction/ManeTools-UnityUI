@@ -1,0 +1,31 @@
+{
+  "name": "com.manefunction.tools-unity-ui",
+  "version": "2.0.0-preview.1",
+  "displayName": "Mane Tools for Unity UI",
+  "description": "Some controls and extensions for uGUI package.\n\nAll extensions can be found under 'Mane.Unity.UI' namespace.\n\nAll components are under Add 'Component -> Mane Tools -> UI' section.",
+  "unity": "6000.0",
+  "unityRelease": "81f1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManeFunction/ManeTools-UnityUI.git"
+  },
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  },
+  "keywords": [
+    "unity",
+    "UI",
+    "uGUI",
+    "extensions",
+    "manefunction"
+  ],
+  "author": {
+    "name": "Ilia Petrov-Komotskii (Mane Function)",
+    "email": "ilia@inkedkettle.games",
+    "url": "https://github.com/ManeFunction"
+  },
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  }
+}
