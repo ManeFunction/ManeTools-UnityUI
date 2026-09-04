@@ -1,0 +1,27 @@
+/* Outer inspector block */
+.inspector-block {
+    border-width: 1px;
+    border-color: #555;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+}
+
+.header {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-left: 2px;
+    margin-bottom: 5px;
+}
+
+.inspector-block .unity-base-field__label {
+    flex-basis: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 150px;
+}
+
+.unity-property-field .unity-base-field__input {
+    margin-left: 12px;
+}

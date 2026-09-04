@@ -11,21 +11,15 @@ namespace Mane.Unity.UI
     [AddComponentMenu("Mane Tools/UI/Max TMPro Size")]
     public class MaxTMProSize : MonoBehaviour
     {
-        [Header("Required components")]
         [SerializeField] private TextMeshProUGUI _text;
-
         [SerializeField] private LayoutElement _layoutElement;
 
-        [Header("Optional components")]
-        [SerializeField] private ContentSizeFitter _contentSizeFitter;
-
-        [SerializeField] private float _maxWidth = -1;
-        [SerializeField] private float _maxHeight = -1;
+        [SerializeField] private int _maxWidth;
+        [SerializeField] private int _maxHeight;
 
 #if UNITY_EDITOR
         public const string TextPropertyName = nameof(_text);
         public const string LayoutElementPropertyName = nameof(_layoutElement);
-        public const string ContentSizeFitterPropertyName = nameof(_contentSizeFitter);
 
         public const string MaxWidthPropertyName = nameof(_maxWidth);
         public const string MaxHeightPropertyName = nameof(_maxHeight);
@@ -34,22 +28,22 @@ namespace Mane.Unity.UI
         private string _oldValue = string.Empty;
 
 
-        public float MaxWidth
+        public int MaxWidth
         {
             get => _maxWidth;
             set
             {
-                _maxWidth = value;
+                _maxWidth = Mathf.Max(0, value);
                 ReCalculateLayout();
             }
         }
 
-        public float MaxHeight
+        public int MaxHeight
         {
             get => _maxHeight;
             set
             {
-                _maxHeight = value;
+                _maxHeight = Mathf.Max(0, value);
                 ReCalculateLayout();
             }
         }
@@ -61,12 +55,15 @@ namespace Mane.Unity.UI
             _text = gameObject.GetOrAddComponent<TextMeshProUGUI>();
             _layoutElement = gameObject.GetOrAddComponent<LayoutElement>();
 
-            _contentSizeFitter = gameObject.GetComponent<ContentSizeFitter>();
-
             ReCalculateLayout();
         }
 
-        protected void OnValidate() => ReCalculateLayout();
+        protected void OnValidate()
+        {
+            _maxWidth = Mathf.Max(0, _maxWidth);
+            _maxHeight = Mathf.Max(0, _maxHeight);
+            ReCalculateLayout();
+        }
 #endif
 
         protected void Update()
@@ -79,42 +76,8 @@ namespace Mane.Unity.UI
 
         private void ReCalculateLayout()
         {
-            // width
-            if (_maxWidth >= 0f)
-            {
-                _layoutElement.preferredWidth = Mathf.Min(_text.preferredWidth, _maxWidth);
-                TrySetContentSizeFitter(ContentSizeFitter.FitMode.PreferredSize, true);
-            }
-            else
-            {
-                _layoutElement.preferredWidth = -1f;
-                TrySetContentSizeFitter(ContentSizeFitter.FitMode.Unconstrained, true);
-            }
-
-            // height
-            if (_maxHeight >= 0f)
-            {
-                _layoutElement.preferredHeight = Mathf.Min(_text.preferredHeight, _maxHeight);
-                TrySetContentSizeFitter(ContentSizeFitter.FitMode.PreferredSize, false);
-            }
-            else
-            {
-                _layoutElement.preferredHeight = -1f;
-                TrySetContentSizeFitter(ContentSizeFitter.FitMode.Unconstrained, false);
-            }
-
-            return;
-
-
-            void TrySetContentSizeFitter(ContentSizeFitter.FitMode fitMode, bool horizontal)
-            {
-                if (!_contentSizeFitter) return;
-
-                if (horizontal)
-                    _contentSizeFitter.horizontalFit = fitMode;
-                else
-                    _contentSizeFitter.verticalFit = fitMode;
-            }
+            _layoutElement.preferredWidth = _maxWidth > 0 ? Mathf.Min(_text.preferredWidth, _maxWidth) : -1f;
+            _layoutElement.preferredHeight = _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
         }
     }
 }

@@ -2,7 +2,8 @@
     "name": "manefunction.tools-unity-ui.editor",
     "rootNamespace": "Mane.Unity.UI.Editor",
     "references": [
-        "GUID:4831a9b59b7de44bdb6e154c6ee8d4aa"
+        "GUID:4831a9b59b7de44bdb6e154c6ee8d4aa",
+        "GUID:8a4e6e73610f6483791a6c2c8cdabadd"
     ],
     "includePlatforms": [
         "Editor"
