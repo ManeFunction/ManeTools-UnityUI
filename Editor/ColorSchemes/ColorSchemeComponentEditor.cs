@@ -10,9 +10,8 @@ using UnityObject = UnityEngine.Object;
 namespace Mane.Unity.UI.Editor
 {
     [CustomEditor(typeof(ColorSchemeComponent), true)]
-    public sealed class ColorSchemeComponentEditor : UnityEditor.Editor
+    public sealed class ColorSchemeComponentEditor : ManeEditor
     {
-        [SerializeField] private VisualTreeAsset xml;
         [SerializeField] private VisualTreeAsset rowXml;
 
         private VisualElement _root;
@@ -28,11 +27,8 @@ namespace Mane.Unity.UI.Editor
                 component.Refresh();
         }
 
-        public override VisualElement CreateInspectorGUI()
+        protected override void BuildInspector(VisualElement root)
         {
-            VisualElement root = new();
-            ManeEditorStyles.Apply(root);
-            xml.CloneTree(root);
             _root = root;
 
             _emptyBox = root.Q<VisualElement>("emptyBox");
@@ -40,7 +36,7 @@ namespace Mane.Unity.UI.Editor
             if (_emptyBox == null || _colorsContainer == null)
             {
                 Debug.LogError("ColorSchemeComponentEditor UXML is missing expected elements.");
-                return root;
+                return;
             }
 
             SerializedProperty schemeProp =
@@ -55,8 +51,6 @@ namespace Mane.Unity.UI.Editor
 
                 root.schedule.Execute(RefreshTarget);
             });
-
-            return root;
         }
 
         private void RebuildColors()
