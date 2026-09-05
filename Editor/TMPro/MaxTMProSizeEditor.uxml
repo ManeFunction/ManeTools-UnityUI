@@ -11,9 +11,9 @@
 
     <ui:VisualElement class="mie-block">
         <ui:Label text="Settings" class="mie-header" />
-        <mie:LimitedValueField binding-path="_maxWidth" label="Max Width" zero-label="Disabled"
+        <mie:LimitedValueField binding-path="_maxWidth" label="Max Width" zero-label="Unlimited"
                                tooltip="0 leaves LayoutElement preferred width unconstrained." />
-        <mie:LimitedValueField binding-path="_maxHeight" label="Max Height" zero-label="Disabled"
+        <mie:LimitedValueField binding-path="_maxHeight" label="Max Height" zero-label="Unlimited"
                                tooltip="0 leaves LayoutElement preferred height unconstrained." />
     </ui:VisualElement>
 </ui:UXML>
