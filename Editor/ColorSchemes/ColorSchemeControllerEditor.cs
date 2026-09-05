@@ -9,8 +9,8 @@ using UnityObject = UnityEngine.Object;
 
 namespace Mane.Unity.UI.Editor
 {
-    [CustomEditor(typeof(ColorSchemeComponent), true)]
-    public sealed class ColorSchemeComponentEditor : ManeEditor
+    [CustomEditor(typeof(ColorSchemeController), true)]
+    public sealed class ColorSchemeControllerEditor : ManeEditor
     {
         [SerializeField] private VisualTreeAsset rowXml;
 
@@ -23,7 +23,7 @@ namespace Mane.Unity.UI.Editor
 
         private void OnEnable()
         {
-            if (target is ColorSchemeComponent component)
+            if (target is ColorSchemeController component)
                 component.Refresh();
         }
 
@@ -35,12 +35,12 @@ namespace Mane.Unity.UI.Editor
             _colorsContainer = root.Q<VisualElement>("colorsContainer");
             if (_emptyBox == null || _colorsContainer == null)
             {
-                Debug.LogError("ColorSchemeComponentEditor UXML is missing expected elements.");
+                Debug.LogError("ColorSchemeControllerEditor UXML is missing expected elements.");
                 return;
             }
 
             SerializedProperty schemeProp =
-                serializedObject.FindProperty(ColorSchemeComponent.ColorSchemePropertyName);
+                serializedObject.FindProperty(ColorSchemeController.ColorSchemePropertyName);
 
             RebuildColors();
             root.TrackPropertyValue(schemeProp, _ => RebuildColors());
@@ -77,7 +77,7 @@ namespace Mane.Unity.UI.Editor
                 _colorsContainer.style.display = DisplayStyle.Flex;
 
                 SerializedProperty graphic =
-                    serializedObject.FindProperty(ColorSchemeComponent.GraphicPropertyName);
+                    serializedObject.FindProperty(ColorSchemeController.GraphicPropertyName);
 
                 bool sizeChanged = false;
                 while (graphic.arraySize < scheme.Length)
@@ -103,7 +103,7 @@ namespace Mane.Unity.UI.Editor
                 for (int i = 0; i < scheme.Length; i++)
                 {
                     SerializedProperty graphicArray = graphic.GetArrayElementAtIndex(i)
-                        .FindPropertyRelative(ColorSchemeComponent.GraphicPropertyName);
+                        .FindPropertyRelative(ColorSchemeController.GraphicPropertyName);
 
                     if (graphicArray.arraySize == 0)
                     {
@@ -288,7 +288,7 @@ namespace Mane.Unity.UI.Editor
 
         private void RefreshTarget()
         {
-            if (target is ColorSchemeComponent component)
+            if (target is ColorSchemeController component)
                 component.Refresh();
         }
 
@@ -312,15 +312,15 @@ namespace Mane.Unity.UI.Editor
 
         private SerializedProperty GetGraphicArray(int colorIndex)
         {
-            return serializedObject.FindProperty(ColorSchemeComponent.GraphicPropertyName)
+            return serializedObject.FindProperty(ColorSchemeController.GraphicPropertyName)
                 .GetArrayElementAtIndex(colorIndex)
-                .FindPropertyRelative(ColorSchemeComponent.GraphicPropertyName);
+                .FindPropertyRelative(ColorSchemeController.GraphicPropertyName);
         }
 
         private ColorScheme GetScheme()
         {
             SerializedProperty schemeProp =
-                serializedObject.FindProperty(ColorSchemeComponent.ColorSchemePropertyName);
+                serializedObject.FindProperty(ColorSchemeController.ColorSchemePropertyName);
             return schemeProp.objectReferenceValue as ColorScheme;
         }
     }

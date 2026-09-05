@@ -2,7 +2,7 @@
          xmlns:uie="UnityEditor.UIElements"
          editor-extension-mode="True">
 
-    <Style src="ColorSchemeComponentEditor.uss" />
+    <Style src="ColorSchemeControllerEditor.uss" />
 
     <ui:VisualElement class="mie-block">
         <uie:PropertyField name="colorSchemeField" binding-path="_colorScheme" label="Color Scheme" />

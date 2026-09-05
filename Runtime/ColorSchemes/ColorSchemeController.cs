@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
-    [AddComponentMenu("Mane Tools/UI/Color Scheme Component")]
-    public class ColorSchemeComponent : UIBehaviour
+    [AddComponentMenu("Mane Tools/UI/Color Scheme Controller")]
+    public class ColorSchemeController : UIBehaviour
     {
         [SerializeField] protected GraphicCollection[] _graphic;
         [SerializeField] private ColorScheme _colorScheme;
