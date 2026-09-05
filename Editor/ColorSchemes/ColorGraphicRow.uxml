@@ -2,6 +2,6 @@
     <ui:VisualElement class="graphic-row">
         <ui:VisualElement name="lead" class="lead" />
         <ui:VisualElement name="graphicField" class="graphic-field-slot" />
-        <ui:Button name="rowButton" class="row-button" />
+        <ui:Button name="rowButton" class="mie-button row-button" />
     </ui:VisualElement>
 </ui:UXML>

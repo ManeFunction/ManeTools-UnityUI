@@ -3,16 +3,14 @@
          xmlns:mie="Mane.Unity.Editor"
          editor-extension-mode="True">
 
-    <Style src="MaxTMProSizeEditor.uss" />
-
-    <ui:VisualElement class="inspector-block">
-        <ui:Label text="Components" class="header" />
+    <ui:VisualElement class="mie-block">
+        <ui:Label text="Components" class="mie-header" />
         <uie:PropertyField name="textField" binding-path="_text" label="Text" />
         <uie:PropertyField name="layoutElementField" binding-path="_layoutElement" label="Layout Element" />
     </ui:VisualElement>
 
-    <ui:VisualElement class="inspector-block">
-        <ui:Label text="Settings" class="header" />
+    <ui:VisualElement class="mie-block">
+        <ui:Label text="Settings" class="mie-header" />
         <mie:LimitedValueField binding-path="_maxWidth" label="Max Width" zero-label="Disabled"
                                tooltip="0 leaves LayoutElement preferred width unconstrained." />
         <mie:LimitedValueField binding-path="_maxHeight" label="Max Height" zero-label="Disabled"

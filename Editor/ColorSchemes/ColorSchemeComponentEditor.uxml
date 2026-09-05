@@ -4,7 +4,7 @@
 
     <Style src="ColorSchemeComponentEditor.uss" />
 
-    <ui:VisualElement class="scheme-block">
+    <ui:VisualElement class="mie-block">
         <uie:PropertyField name="colorSchemeField" binding-path="_colorScheme" label="Color Scheme" />
         <ui:VisualElement name="emptyBox" class="message-box">
             <ui:Image class="message-icon" />

@@ -1,3 +1,4 @@
+using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -30,6 +31,7 @@ namespace Mane.Unity.UI.Editor
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new();
+            ManeEditorStyles.Apply(root);
             xml.CloneTree(root);
             _root = root;
 
@@ -128,6 +130,7 @@ namespace Mane.Unity.UI.Editor
             {
                 _rebuilding = false;
                 RebindSchemeLengthTracking();
+                ManeEditorStyles.RefreshFieldLayout(_root);
             }
         }
 

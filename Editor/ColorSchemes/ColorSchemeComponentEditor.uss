@@ -1,47 +1,3 @@
-/* Outer inspector block */
-.scheme-block {
-    border-width: 1px;
-    border-color: #555;
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.scheme-block .unity-base-field__label {
-    flex-basis: 0;
-    flex-grow: 0;
-    flex-shrink: 0;
-    width: 150px;
-}
-
-/* Empty-state warning */
-.message-box {
-    border-width: 1px;
-    border-color: #555;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin-top: 5px;
-}
-
-.message-icon {
-    width: 16px;
-    height: 16px;
-    background-image: resource("icons/console.warnicon.png");
-    margin-right: 5px;
-    flex-shrink: 0;
-}
-
-.message-box-label {
-    flex-grow: 1;
-    flex-wrap: wrap;
-    overflow: hidden;
-    padding-right: 20px;
-    text-overflow: ellipsis;
-    -unity-overflow-clip-box: padding-box;
-}
-
 .colors-container {
     margin-top: 5px;
 }
@@ -67,15 +23,22 @@
 .lead .unity-color-field {
     width: 40px;
     min-width: 40px;
+    flex-grow: 0;
     margin: 0;
     padding: 0;
 }
 
-.lead .unity-base-field__label {
+.mie-fields .lead .unity-base-field__label {
     display: none;
+    flex-basis: 0;
     width: 0;
     min-width: 0;
+    max-width: 0;
     margin: 0;
+}
+
+.mie-fields .lead .unity-base-field__input {
+    margin-left: 0;
 }
 
 .branch-label {
@@ -100,11 +63,17 @@
     min-width: 0;
 }
 
-.graphic-field .unity-base-field__label {
+.mie-fields .graphic-field .unity-base-field__label {
     display: none;
+    flex-basis: 0;
     width: 0;
     min-width: 0;
+    max-width: 0;
     margin: 0;
+}
+
+.mie-fields .graphic-field .unity-base-field__input {
+    margin-left: 0;
 }
 
 .row-button {
@@ -114,16 +83,4 @@
     flex-shrink: 0;
     padding: 0;
     margin: 0;
-    border-width: 1px;
-    border-color: #555;
-    background-color: #333;
-    color: #fff;
-}
-
-.row-button:hover {
-    background-color: #444;
-}
-
-.row-button:active {
-    background-color: #555;
 }

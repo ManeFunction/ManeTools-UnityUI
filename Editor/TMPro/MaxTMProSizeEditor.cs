@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Mane.Unity.Editor;
 
 namespace Mane.Unity.UI.Editor
 {
@@ -13,7 +14,8 @@ namespace Mane.Unity.UI.Editor
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new();
-            tree.CloneTree(root);
+            ManeEditorStyles.Apply(root);
+            xml.CloneTree(root);
             return root;
         }
     }
