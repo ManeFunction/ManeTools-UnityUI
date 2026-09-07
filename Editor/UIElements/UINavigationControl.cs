@@ -20,6 +20,10 @@ namespace Mane.Unity.UI.Editor
 
         private readonly NavigationModeField _modeField;
         private readonly PropertyField _wrapAround;
+        private readonly PropertyField _selectOnUp;
+        private readonly PropertyField _selectOnDown;
+        private readonly PropertyField _selectOnLeft;
+        private readonly PropertyField _selectOnRight;
         private readonly VisualElement _explicitNavigation;
         private readonly Button _visualizeButton;
 
@@ -37,15 +41,22 @@ namespace Mane.Unity.UI.Editor
             _modeField = new NavigationModeField("Navigation");
             Add(_modeField);
 
-            _wrapAround = new PropertyField { name = "wrapAround", label = "Wrap Around" };
+            _wrapAround = new PropertyField { label = "Wrap Around" };
             Add(_wrapAround);
 
-            _explicitNavigation = new VisualElement { name = "explicitNavigation" };
-            _explicitNavigation.Add(new PropertyField { name = "selectOnUp", label = "Select On Up" });
-            _explicitNavigation.Add(new PropertyField { name = "selectOnDown", label = "Select On Down" });
-            _explicitNavigation.Add(new PropertyField { name = "selectOnLeft", label = "Select On Left" });
-            _explicitNavigation.Add(new PropertyField { name = "selectOnRight", label = "Select On Right" });
+            _selectOnUp = new PropertyField { label = "Select On Up" };
+            _selectOnDown = new PropertyField { label = "Select On Down" };
+            _selectOnLeft = new PropertyField { label = "Select On Left" };
+            _selectOnRight = new PropertyField { label = "Select On Right" };
+            _explicitNavigation = new VisualElement();
+            _explicitNavigation.Add(_selectOnUp);
+            _explicitNavigation.Add(_selectOnDown);
+            _explicitNavigation.Add(_selectOnLeft);
+            _explicitNavigation.Add(_selectOnRight);
             Add(_explicitNavigation);
+
+            SetVisible(_wrapAround, false);
+            SetVisible(_explicitNavigation, false);
 
             VisualElement row = new();
             row.AddToClassList("mie-inline-button-row");
@@ -69,8 +80,17 @@ namespace Mane.Unity.UI.Editor
                 SyncVisualizeButton();
             };
 
-            RegisterCallback<AttachToPanelEvent>(_ => SelectableNavigationVisualizer.AddSubscriber());
-            RegisterCallback<DetachFromPanelEvent>(_ => SelectableNavigationVisualizer.RemoveSubscriber());
+            RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                SelectableNavigationVisualizer.AddSubscriber();
+                SelectableNavigationVisualizer.EnabledChanged += SyncVisualizeButton;
+                SyncVisualizeButton();
+            });
+            RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                SelectableNavigationVisualizer.EnabledChanged -= SyncVisualizeButton;
+                SelectableNavigationVisualizer.RemoveSubscriber();
+            });
         }
 
         [UxmlAttribute("binding-path")]
@@ -87,11 +107,11 @@ namespace Mane.Unity.UI.Editor
 
             _serializedObject = serializedObject;
             string path = BindingPath;
-            _wrapAround.bindingPath = path + ".m_WrapAround";
-            SetChildBindingPath(_explicitNavigation, "selectOnUp", path + ".m_SelectOnUp");
-            SetChildBindingPath(_explicitNavigation, "selectOnDown", path + ".m_SelectOnDown");
-            SetChildBindingPath(_explicitNavigation, "selectOnLeft", path + ".m_SelectOnLeft");
-            SetChildBindingPath(_explicitNavigation, "selectOnRight", path + ".m_SelectOnRight");
+            BindField(_wrapAround, serializedObject, path + ".m_WrapAround");
+            BindField(_selectOnUp, serializedObject, path + ".m_SelectOnUp");
+            BindField(_selectOnDown, serializedObject, path + ".m_SelectOnDown");
+            BindField(_selectOnLeft, serializedObject, path + ".m_SelectOnLeft");
+            BindField(_selectOnRight, serializedObject, path + ".m_SelectOnRight");
 
             _modeProperty = serializedObject.FindProperty(path + ".m_Mode");
             if (_modeProperty == null)
@@ -185,11 +205,16 @@ namespace Mane.Unity.UI.Editor
             }
         }
 
-        private static void SetChildBindingPath(VisualElement parent, string name, string bindingPath)
+        private static void BindField(PropertyField field, SerializedObject serializedObject, string path)
         {
-            PropertyField field = parent.Q<PropertyField>(name);
-            if (field != null)
-                field.bindingPath = bindingPath;
+            SerializedProperty property = serializedObject.FindProperty(path);
+            if (property == null)
+            {
+                Debug.LogError($"UINavigationControl could not find '{path}'.");
+                return;
+            }
+
+            field.BindProperty(property);
         }
 
         private static void SetVisible(VisualElement element, bool visible) =>

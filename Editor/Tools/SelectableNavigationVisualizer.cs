@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -15,6 +16,8 @@ namespace Mane.Unity.UI.Editor
 
         private static int _subscribers;
 
+        public static event Action EnabledChanged;
+
         public static bool Enabled
         {
             get => EditorPrefs.GetBool(PrefKey);
@@ -25,6 +28,7 @@ namespace Mane.Unity.UI.Editor
 
                 EditorPrefs.SetBool(PrefKey, value);
                 SceneView.RepaintAll();
+                EnabledChanged?.Invoke();
             }
         }
 
