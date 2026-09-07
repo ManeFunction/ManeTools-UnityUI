@@ -4,8 +4,8 @@ using UnityEditor.UI;
 namespace Mane.Unity.UI.Editor
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(ThreeStateToggle), true)]
-    public class ThreeStateToggleEditor : SelectableEditor
+    [CustomEditor(typeof(ThreeStatesToggle), true)]
+    public class ThreeStatesToggleEditor : SelectableEditor
     {
         private SerializedProperty _onValueChangedProperty;
         private SerializedProperty _transitionProperty;
@@ -18,12 +18,12 @@ namespace Mane.Unity.UI.Editor
         {
             base.OnEnable();
 
-            _transitionProperty = serializedObject.FindProperty(ThreeStateToggle.TransitionPropertyName);
-            _graphicProperty = serializedObject.FindProperty(ThreeStateToggle.GraphicPropertyName);
-            _offGraphicProperty = serializedObject.FindProperty(ThreeStateToggle.OffGraphicPropertyName);
-            _undefinedGraphicProperty = serializedObject.FindProperty(ThreeStateToggle.UndefinedGraphicPropertyName);
-            _stateProperty = serializedObject.FindProperty(ThreeStateToggle.StatePropertyName);
-            _onValueChangedProperty = serializedObject.FindProperty(ThreeStateToggle.OnStateValueChangedPropertyName);
+            _transitionProperty = serializedObject.FindProperty(ThreeStatesToggle.TransitionPropertyName);
+            _graphicProperty = serializedObject.FindProperty(ThreeStatesToggle.GraphicPropertyName);
+            _offGraphicProperty = serializedObject.FindProperty(ThreeStatesToggle.OffGraphicPropertyName);
+            _undefinedGraphicProperty = serializedObject.FindProperty(ThreeStatesToggle.UndefinedGraphicPropertyName);
+            _stateProperty = serializedObject.FindProperty(ThreeStatesToggle.StatePropertyName);
+            _onValueChangedProperty = serializedObject.FindProperty(ThreeStatesToggle.OnStateValueChangedPropertyName);
         }
 
         public override void OnInspectorGUI()

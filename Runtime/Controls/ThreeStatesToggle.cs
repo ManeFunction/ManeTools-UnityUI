@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
-    [AddComponentMenu("Mane Tools/UI/Three State Toggle")]
-    public class ThreeStateToggle : Toggle
+    [AddComponentMenu("Mane Tools/UI/Three States Toggle")]
+    public class ThreeStatesToggle : Toggle
     {
         public Graphic offGraphic;
         public Graphic undefinedGraphic;
         
         [SerializeField] private ToggleState _state = ToggleState.Undefined;
 
-        public ThreeStateToggleEvent onStateValueChanged = new ThreeStateToggleEvent();
+        public ThreeStatesToggleEvent onStateValueChanged = new();
         
         public event UnityAction<bool?> StateValueChanged
         {
@@ -32,7 +32,7 @@ namespace Mane.Unity.UI
             }
         }
 
-        private const string ToggleGroupNotSupportedMessage = "Toggle group is not supported with ThreeStateToggle";
+        private const string ToggleGroupNotSupportedMessage = "Toggle group is not supported with ThreeStatesToggle";
         [Obsolete(ToggleGroupNotSupportedMessage, true)]
         public new ToggleGroup group
         {
@@ -144,7 +144,7 @@ namespace Mane.Unity.UI
         
         
         [Serializable]
-        public class ThreeStateToggleEvent : UnityEvent<bool?> { }
+        public class ThreeStatesToggleEvent : UnityEvent<bool?> { }
 
         private enum ToggleState
         {
