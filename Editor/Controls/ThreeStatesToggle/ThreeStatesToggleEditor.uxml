@@ -4,8 +4,6 @@
          xmlns:mui="Mane.Unity.UI.Editor"
          editor-extension-mode="True">
 
-    <Style src="ThreeStatesToggleEditor.uss" />
-
     <mie:CollapsibleBlock name="interaction" text="Interaction" collapsed-by-default="true">
         <uie:PropertyField name="interactable" binding-path="m_Interactable" label="Interactable" />
 
@@ -27,21 +25,7 @@
             <uie:PropertyField name="animationTriggers" binding-path="m_AnimationTriggers" label="Animation Triggers" />
         </ui:VisualElement>
 
-        <ui:VisualElement name="navigationBlock" class="mie-nested-block">
-            <mui:NavigationModeField name="navigationMode" label="Navigation" />
-            <uie:PropertyField name="wrapAround" binding-path="m_Navigation.m_WrapAround" label="Wrap Around" />
-            <ui:VisualElement name="explicitNavigation">
-                <uie:PropertyField name="selectOnUp" binding-path="m_Navigation.m_SelectOnUp" label="Select On Up" />
-                <uie:PropertyField name="selectOnDown" binding-path="m_Navigation.m_SelectOnDown" label="Select On Down" />
-                <uie:PropertyField name="selectOnLeft" binding-path="m_Navigation.m_SelectOnLeft" label="Select On Left" />
-                <uie:PropertyField name="selectOnRight" binding-path="m_Navigation.m_SelectOnRight" label="Select On Right" />
-            </ui:VisualElement>
-            <ui:VisualElement class="mie-inline-button-row unity-base-field">
-                <ui:Label class="unity-base-field__label" />
-                <ui:Button name="visualizeNavigation" text="Visualize" class="mie-button mie-inline-button unity-base-field__input"
-                           tooltip="Show navigation flows between selectable UI elements." />
-            </ui:VisualElement>
-        </ui:VisualElement>
+        <mui:UINavigationControl name="navigation" />
     </mie:CollapsibleBlock>
 
     <ui:VisualElement class="mie-block">
