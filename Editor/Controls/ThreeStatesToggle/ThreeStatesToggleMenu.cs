@@ -7,9 +7,8 @@ namespace Mane.Unity.UI.Editor
     internal static class ThreeStatesToggleMenu
     {
         private const string PrefabGuid = "89a06538f68ed48bfba7cbdd93317998";
-        private const int MenuPriority = 2102;
 
-        [MenuItem("GameObject/UI (Canvas)/Three States Toggle", false, MenuPriority)]
+        [MenuItem("GameObject/UI (Canvas)/Three States Toggle - Mane Tools", false, 2120)]
         private static void CreateThreeStateToggle(MenuCommand menuCommand)
         {
             if (Selection.gameObjects.Length > 1 && menuCommand.context != Selection.activeGameObject)
