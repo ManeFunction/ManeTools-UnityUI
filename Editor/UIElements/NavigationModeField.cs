@@ -86,12 +86,18 @@ namespace Mane.Unity.UI.Editor
 
             HideMenu();
 
-            _overlay = new VisualElement { name = "mie-navigation-overlay", pickingMode = PickingMode.Ignore };
-            _overlay.style.position = Position.Absolute;
-            _overlay.style.left = 0;
-            _overlay.style.top = 0;
-            _overlay.style.right = 0;
-            _overlay.style.bottom = 0;
+            _overlay = new VisualElement
+            {
+                name = "mie-navigation-overlay", pickingMode = PickingMode.Ignore,
+                style =
+                {
+                    position = Position.Absolute,
+                    left = 0,
+                    top = 0,
+                    right = 0,
+                    bottom = 0
+                }
+            };
             CopyAncestorStyleSheets(_overlay);
 
             VisualElement backdrop = new() { pickingMode = PickingMode.Position };
@@ -190,24 +196,18 @@ namespace Mane.Unity.UI.Editor
 
         private static string Format(Navigation.Mode value)
         {
-            if (value == Navigation.Mode.None)
-                return "None";
-            if (value == Everything)
-                return "Everything";
-            if (value == Automatic)
-                return "Automatic";
-            if (value == Explicit)
-                return "Explicit";
-            if (value == Horizontal)
-                return "Horizontal";
-            if (value == Vertical)
-                return "Vertical";
-            if (value == (Explicit | Horizontal))
-                return "Horizontal, Explicit";
-            if (value == (Explicit | Vertical))
-                return "Vertical, Explicit";
-
-            return value.ToString();
+            return value switch
+            {
+                Navigation.Mode.None => "None",
+                Everything => "Everything",
+                Automatic => "Automatic",
+                Explicit => "Explicit",
+                Horizontal => "Horizontal",
+                Vertical => "Vertical",
+                Explicit | Horizontal => "Horizontal, Explicit",
+                Explicit | Vertical => "Vertical, Explicit",
+                _ => value.ToString()
+            };
         }
     }
 }
