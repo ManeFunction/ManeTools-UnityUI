@@ -4,7 +4,7 @@
          xmlns:mui="Mane.Unity.UI.Editor"
          editor-extension-mode="True">
 
-    <mie:CollapsibleBlock name="interaction" text="Interaction" collapsed-by-default="true">
+    <mie:FoldoutBlock name="interaction" text="Interaction" collapsed-by-default="true">
         <uie:PropertyField name="interactable" binding-path="m_Interactable" label="Interactable" />
 
         <ui:VisualElement name="transitionBlock" class="mie-nested-block">
@@ -16,7 +16,7 @@
         </ui:VisualElement>
 
         <mui:UINavigationControl name="navigation" />
-    </mie:CollapsibleBlock>
+    </mie:FoldoutBlock>
 
     <ui:VisualElement class="mie-block">
         <ui:Label text="Toggle" class="mie-header" />
