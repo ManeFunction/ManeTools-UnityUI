@@ -1,4 +1,4 @@
-using System.IO;
+using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -13,7 +13,6 @@ namespace Mane.Unity.UI.Editor
     {
         public const string UssClassName = "mie-navigation-control";
 
-        private const string SheetFileName = "UINavigationControl.uss";
         private const string DefaultBindingPath = "m_Navigation";
 
         private static StyleSheet _sheet;
@@ -177,33 +176,8 @@ namespace Mane.Unity.UI.Editor
                 styleSheets.Add(sheet);
         }
 
-        private static StyleSheet Sheet
-        {
-            get
-            {
-                if (_sheet != null)
-                    return _sheet;
-
-                string[] guids = AssetDatabase.FindAssets($"t:MonoScript {nameof(UINavigationControl)}");
-                foreach (string guid in guids)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-                    MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                    if (script == null || script.GetClass() != typeof(UINavigationControl))
-                        continue;
-
-                    string folder = Path.GetDirectoryName(path);
-                    if (string.IsNullOrEmpty(folder))
-                        break;
-
-                    _sheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(
-                        Path.Combine(folder, SheetFileName).Replace('\\', '/'));
-                    break;
-                }
-
-                return _sheet;
-            }
-        }
+        private static StyleSheet Sheet =>
+            _sheet ??= UIElementsTools.LoadUSS(typeof(UINavigationControl));
 
         private static void BindField(PropertyField field, SerializedObject serializedObject, string path)
         {
