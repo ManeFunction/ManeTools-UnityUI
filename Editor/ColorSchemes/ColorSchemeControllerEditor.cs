@@ -1,3 +1,4 @@
+using Mane.Unity;
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -31,9 +32,14 @@ namespace Mane.Unity.UI.Editor
         {
             _root = root;
 
-            _emptyBox = root.Q<VisualElement>("emptyBox");
+            _emptyBox = InfoBoxDrawer.Create(
+                "Assign a Color Scheme to map its colors to graphics.",
+                InfoBoxType.Warning);
+            _emptyBox.name = "emptyBox";
+            root.Insert(0, _emptyBox);
+
             _colorsContainer = root.Q<VisualElement>("colorsContainer");
-            if (_emptyBox == null || _colorsContainer == null)
+            if (_colorsContainer == null)
             {
                 Debug.LogError("ColorSchemeControllerEditor UXML is missing expected elements.");
                 return;

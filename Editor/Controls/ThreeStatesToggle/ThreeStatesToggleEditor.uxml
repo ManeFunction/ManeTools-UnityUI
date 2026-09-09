@@ -10,16 +10,6 @@
         <ui:VisualElement name="transitionBlock" class="mie-nested-block">
             <uie:PropertyField name="selectableTransition" binding-path="m_Transition" label="Transition" />
             <uie:PropertyField name="targetGraphic" binding-path="m_TargetGraphic" label="Target Graphic" />
-            <ui:VisualElement name="colorGraphicWarning" class="message-box">
-                <ui:Image class="message-icon" />
-                <ui:Label class="message-box-label"
-                          text="You must have a Graphic target in order to use a color transition." />
-            </ui:VisualElement>
-            <ui:VisualElement name="spriteGraphicWarning" class="message-box">
-                <ui:Image class="message-icon" />
-                <ui:Label class="message-box-label"
-                          text="You must have an Image target in order to use a sprite swap transition." />
-            </ui:VisualElement>
             <uie:PropertyField name="colors" binding-path="m_Colors" label="Colors" />
             <uie:PropertyField name="spriteState" binding-path="m_SpriteState" label="Sprite State" />
             <uie:PropertyField name="animationTriggers" binding-path="m_AnimationTriggers" label="Animation Triggers" />

@@ -1,3 +1,4 @@
+using Mane.Unity;
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -22,20 +23,31 @@ namespace Mane.Unity.UI.Editor
         protected override void BuildInspector(VisualElement root)
         {
             _targetGraphic = root.Q<PropertyField>("targetGraphic");
-            _colorWarning = root.Q<VisualElement>("colorGraphicWarning");
-            _spriteWarning = root.Q<VisualElement>("spriteGraphicWarning");
             _colors = root.Q<PropertyField>("colors");
             _spriteState = root.Q<PropertyField>("spriteState");
             _animationTriggers = root.Q<PropertyField>("animationTriggers");
             UINavigationControl navigation = root.Q<UINavigationControl>("navigation");
 
-            if (_targetGraphic == null || _colorWarning == null || _spriteWarning == null
-                || _colors == null || _spriteState == null || _animationTriggers == null
-                || navigation == null)
+            if (_targetGraphic == null || _colors == null || _spriteState == null
+                || _animationTriggers == null || navigation == null)
             {
                 Debug.LogError("ThreeStatesToggleEditor UXML is missing expected elements.");
                 return;
             }
+
+            VisualElement transitionBlock = _targetGraphic.parent;
+            int graphicIndex = transitionBlock.IndexOf(_targetGraphic);
+
+            _colorWarning = InfoBoxDrawer.Create(
+                "You must have a Graphic target in order to use a color transition.",
+                InfoBoxType.Warning);
+            _colorWarning.name = "colorGraphicWarning";
+            _spriteWarning = InfoBoxDrawer.Create(
+                "You must have an Image target in order to use a sprite swap transition.",
+                InfoBoxType.Warning);
+            _spriteWarning.name = "spriteGraphicWarning";
+            transitionBlock.Insert(graphicIndex + 1, _colorWarning);
+            transitionBlock.Insert(graphicIndex + 2, _spriteWarning);
 
             navigation.Bind(serializedObject);
 
