@@ -9,7 +9,7 @@ using Button = UnityEngine.UIElements.Button;
 namespace Mane.Unity.UI.Editor
 {
     [UxmlElement]
-    public partial class UINavigationControl : VisualElement
+    public sealed partial class UINavigationControl : VisualElement
     {
         public const string UssClassName = "mie-navigation-control";
 

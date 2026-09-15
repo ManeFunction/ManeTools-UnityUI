@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace Mane.Unity.UI.Editor
 {
     [UxmlElement]
-    public partial class NavigationModeField : BaseField<Navigation.Mode>
+    public sealed partial class NavigationModeField : BaseField<Navigation.Mode>
     {
         private const Navigation.Mode Horizontal = Navigation.Mode.Horizontal;
         private const Navigation.Mode Vertical = Navigation.Mode.Vertical;
