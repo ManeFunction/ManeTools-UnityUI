@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Mane.Unity.UI
 {
+    [ManeStyle]
     [CreateAssetMenu(fileName = "ColorScheme", menuName = "Mane Tools/Color Scheme")]
     public class ColorScheme : ScriptableObject
     {
