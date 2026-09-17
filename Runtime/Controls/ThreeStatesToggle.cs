@@ -152,14 +152,5 @@ namespace Mane.Unity.UI
             On,
             Off,
         }
-        
-#if UNITY_EDITOR
-        public const string TransitionPropertyName = nameof(toggleTransition);
-        public const string GraphicPropertyName = nameof(graphic);
-        public const string OffGraphicPropertyName = nameof(offGraphic);
-        public const string UndefinedGraphicPropertyName = nameof(undefinedGraphic);
-        public const string StatePropertyName = nameof(_state);
-        public const string OnStateValueChangedPropertyName = nameof(onStateValueChanged);
-#endif
     }
 }

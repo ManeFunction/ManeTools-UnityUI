@@ -66,21 +66,29 @@ namespace Mane.Unity.UI
 
         public Color GetGraphicColor(int i)
         {
-            if (i < _graphic.Length)
-            {
-                MaskableGraphic graphic = _graphic[i][0];
-                if (graphic)
-                    return graphic.color;
-            }
+            if (_graphic == null || i < 0 || i >= _graphic.Length)
+                return Color.white;
 
-            return Color.white;
+            GraphicCollection collection = _graphic[i];
+            if (collection == null || collection.Length == 0)
+                return Color.white;
+
+            MaskableGraphic graphic = collection[0];
+            return graphic ? graphic.color : Color.white;
         }
 
         public void SetGraphicsColor(int i, Color color)
         {
-            for (int j = 0; j < _graphic[i].Length; j++)
+            if (_graphic == null || i < 0 || i >= _graphic.Length)
+                return;
+
+            GraphicCollection collection = _graphic[i];
+            if (collection == null)
+                return;
+
+            for (int j = 0; j < collection.Length; j++)
             {
-                MaskableGraphic graphic = _graphic[i][j];
+                MaskableGraphic graphic = collection[j];
                 if (graphic)
                     graphic.color = color;
             }
@@ -91,7 +99,8 @@ namespace Mane.Unity.UI
 
         public void Refresh()
         {
-            if (_colorScheme == null || _graphic.Length == 0) return;
+            if (_colorScheme == null || _graphic == null || _graphic.Length == 0)
+                return;
 
             for (int i = 0; i < _graphic.Length; i++)
                 RefreshColor(i);
@@ -99,9 +108,13 @@ namespace Mane.Unity.UI
 
         private void RefreshColor(int i)
         {
-            for (int j = 0; j < _graphic[i].Length; j++)
+            GraphicCollection collection = _graphic[i];
+            if (collection == null)
+                return;
+
+            for (int j = 0; j < collection.Length; j++)
             {
-                MaskableGraphic graphic = _graphic[i][j];
+                MaskableGraphic graphic = collection[j];
                 if (graphic && i < _colorScheme.Length)
                 {
 #if UNITY_EDITOR
@@ -119,8 +132,16 @@ namespace Mane.Unity.UI
         {
             [SerializeField] private MaskableGraphic[] _graphic;
             
-            public MaskableGraphic this[int index] => _graphic[index];
-            public int Length => _graphic.Length;
+            /// <summary>
+            /// Graphic at <paramref name="index"/> in this slot.
+            /// </summary>
+            public MaskableGraphic this[int index] =>
+                _graphic == null || index < 0 || index >= _graphic.Length ? null : _graphic[index];
+
+            /// <summary>
+            /// Number of graphics in this slot.
+            /// </summary>
+            public int Length => _graphic?.Length ?? 0;
         }
 
 

@@ -1,4 +1,3 @@
-using Mane.Unity;
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;

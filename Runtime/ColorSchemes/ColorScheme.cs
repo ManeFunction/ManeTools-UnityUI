@@ -8,10 +8,10 @@ namespace Mane.Unity.UI
     {
         [SerializeField] private Color[] _colors = { Color.white };
 
-        public int Length => _colors.Length;
+        public int Length => _colors?.Length ?? 0;
 
         public Color this[int index] =>
-            index < 0 || index >= _colors.Length ? Color.white : _colors[index];
+            _colors == null || index < 0 || index >= _colors.Length ? Color.white : _colors[index];
 
 #if UNITY_EDITOR
         public const string ColorsPropertyName = nameof(_colors);

@@ -1,4 +1,3 @@
-using Mane.Unity;
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -148,8 +147,14 @@ namespace Mane.Unity.UI.Editor
             if (colors == null)
                 return;
 
-            _schemeTracker = new VisualElement { name = "schemeTracker" };
-            _schemeTracker.style.display = DisplayStyle.None;
+            _schemeTracker = new VisualElement
+            {
+                name = "schemeTracker",
+                style =
+                {
+                    display = DisplayStyle.None
+                }
+            };
             _root.Add(_schemeTracker);
             _schemeTracker.TrackPropertyValue(colors, property =>
             {

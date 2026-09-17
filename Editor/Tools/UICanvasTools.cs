@@ -47,10 +47,10 @@ namespace Mane.Unity.UI.Editor
                 return canvas.gameObject;
 
             Canvas[] canvases = StageUtility.GetCurrentStageHandle().FindComponentsOfType<Canvas>();
-            for (int i = 0; i < canvases.Length; i++)
+            foreach (var c in canvases)
             {
-                if (IsValidCanvas(canvases[i]))
-                    return canvases[i].gameObject;
+                if (IsValidCanvas(c))
+                    return c.gameObject;
             }
 
             return CreateCanvas();

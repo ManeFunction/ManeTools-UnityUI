@@ -17,14 +17,6 @@ namespace Mane.Unity.UI
         [SerializeField] private int _maxWidth;
         [SerializeField] private int _maxHeight;
 
-#if UNITY_EDITOR
-        public const string TextPropertyName = nameof(_text);
-        public const string LayoutElementPropertyName = nameof(_layoutElement);
-
-        public const string MaxWidthPropertyName = nameof(_maxWidth);
-        public const string MaxHeightPropertyName = nameof(_maxHeight);
-#endif
-
         private string _oldValue = string.Empty;
 
 
@@ -76,6 +68,9 @@ namespace Mane.Unity.UI
 
         private void ReCalculateLayout()
         {
+            if (!_text || !_layoutElement)
+                return;
+
             _layoutElement.preferredWidth = _maxWidth > 0 ? Mathf.Min(_text.preferredWidth, _maxWidth) : -1f;
             _layoutElement.preferredHeight = _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
         }
