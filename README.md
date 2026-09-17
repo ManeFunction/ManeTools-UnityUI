@@ -1,16 +1,20 @@
 # Mane Tools for Unity UI
 
-Custom controls and extensions for Unity UI package (`uGUI`).
+Controls and extensions for Unity UI (`uGUI`).
 
-This package is dependent on [ManeTools-Unity](https://github.com/ManeFunction/ManeTools-Unity.git).
+The package is supported starting from **Unity 6.0.81** (6000.0.81f1) and depends on [ManeTools-Unity](https://github.com/ManeFunction/ManeTools-Unity.git).
+
+Add components from **Add Component → Mane Tools → UI**.
 
 ## Features
 
-- `ColorScheme`.
-- `ScrollRect` snapping extensions.
-- `MaxTMProSize`.
-
-Almost all public API methods are covered with NUnit tests.
+- `ColorScheme` assets and `ColorSchemeController` to apply and switch color themes on simple UI graphics.
+- `ThreeStatesToggle` - on / off / undefined, with optional extra graphics.
+- `MaxTMProSize` - clamp a TextMesh Pro label's preferred size through a `LayoutElement`.
+- `ScrollRect` snap helpers (`SnapTo`, `SnapXTo`, `SnapYTo`).
+- `RectTransformChangedCatcher` and `ManeUIBehaviour` for layout change callbacks and easy access to `rectTransform`, the same way as `transform`.
+- `UICanvasTools` helpers that ease working with UI layouts.
+- NUnit coverage for most of the package.
 
 ## Installation
 
