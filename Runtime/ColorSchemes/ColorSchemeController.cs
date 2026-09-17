@@ -6,12 +6,19 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
+    /// <summary>
+    /// Applies a <see cref="ColorScheme"/> to grouped <see cref="MaskableGraphic"/>s.
+    /// Slot i maps to scheme color i.
+    /// </summary>
     [AddComponentMenu("Mane Tools/UI/Color Scheme Controller")]
     public class ColorSchemeController : UIBehaviour
     {
         [SerializeField] protected GraphicCollection[] _graphic;
         [SerializeField] private ColorScheme _colorScheme;
         
+        /// <summary>
+        /// Active palette. Setting it applies colors immediately.
+        /// </summary>
         public ColorScheme ColorScheme
         {
             get => _colorScheme;
@@ -24,6 +31,11 @@ namespace Mane.Unity.UI
 
         protected override void Awake() => Refresh();
 
+        /// <summary>
+        /// Lerps graphic colors toward <paramref name="colorScheme"/> over <paramref name="duration"/> seconds.
+        /// Snaps immediately when duration is not positive or there is no current scheme.
+        /// Does nothing when the target is null or the color counts differ.
+        /// </summary>
         public void AnimateTo(ColorScheme colorScheme, float duration, AnimationCurve animationCurve = null)
         {
             if (duration <= 0f || _colorScheme == null)
@@ -64,6 +76,9 @@ namespace Mane.Unity.UI
                 SetGraphicsColor(i, targetScheme[i]);
         }
 
+        /// <summary>
+        /// Color of the first graphic in slot <paramref name="i"/>, or white if none.
+        /// </summary>
         public Color GetGraphicColor(int i)
         {
             if (_graphic == null || i < 0 || i >= _graphic.Length)
@@ -77,6 +92,9 @@ namespace Mane.Unity.UI
             return graphic ? graphic.color : Color.white;
         }
 
+        /// <summary>
+        /// Sets every graphic in slot <paramref name="i"/> to <paramref name="color"/>.
+        /// </summary>
         public void SetGraphicsColor(int i, Color color)
         {
             if (_graphic == null || i < 0 || i >= _graphic.Length)
@@ -94,9 +112,15 @@ namespace Mane.Unity.UI
             }
         }
         
+        /// <summary>
+        /// Assigns the palette without applying colors. Used while animating.
+        /// </summary>
         public void SetColorSchemeWithoutRefresh(ColorScheme colorScheme) => 
             _colorScheme = colorScheme;
 
+        /// <summary>
+        /// Applies the current scheme colors to all graphic slots.
+        /// </summary>
         public void Refresh()
         {
             if (_colorScheme == null || _graphic == null || _graphic.Length == 0)
@@ -127,6 +151,9 @@ namespace Mane.Unity.UI
         }
 
 
+        /// <summary>
+        /// Graphics that share one scheme color.
+        /// </summary>
         [Serializable]
         public class GraphicCollection
         {

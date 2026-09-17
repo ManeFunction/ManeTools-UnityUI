@@ -3,10 +3,17 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
+    /// <summary>
+    /// Helpers to move a <see cref="ScrollRect"/> so a child is in view.
+    /// </summary>
     public static class ScrollRectExtensions
     {
         // Based on this discussion, but improved:
         // https://stackoverflow.com/questions/30766020/how-to-scroll-to-a-specific-element-in-scrollrect-with-unity-ui
+        /// <summary>
+        /// Scrolls so <paramref name="item"/> sits at the content origin, plus <paramref name="offset"/>.
+        /// Axes that are not enabled keep their current position.
+        /// </summary>
         public static void SnapTo(this ScrollRect scroll, Transform item, Vector2 offset = default)
         {
             Canvas.ForceUpdateCanvases();
@@ -21,6 +28,9 @@ namespace Mane.Unity.UI
         }
 
         // Optimized versions
+        /// <summary>
+        /// Horizontal-only <see cref="SnapTo"/>.
+        /// </summary>
         public static void SnapXTo(this ScrollRect scroll, Transform item, float offset = 0f)
         {
             Canvas.ForceUpdateCanvases();
@@ -32,6 +42,9 @@ namespace Mane.Unity.UI
             scroll.content.anchoredPosition = new Vector2(x + offset, contentPos.y);
         }
         
+        /// <summary>
+        /// Vertical-only <see cref="SnapTo"/>.
+        /// </summary>
         public static void SnapYTo(this ScrollRect scroll, Transform item, float offset = 0f)
         {
             Canvas.ForceUpdateCanvases();

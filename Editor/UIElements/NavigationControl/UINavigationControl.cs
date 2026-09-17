@@ -8,9 +8,16 @@ using Button = UnityEngine.UIElements.Button;
 
 namespace Mane.Unity.UI.Editor
 {
+    /// <summary>
+    /// Inspector block for a Selectable's <see cref="Navigation"/>: mode, wrap-around,
+    /// explicit targets, and a visualize toggle.
+    /// </summary>
     [UxmlElement]
     public sealed partial class UINavigationControl : VisualElement
     {
+        /// <summary>
+        /// USS class name for this control.
+        /// </summary>
         public const string UssClassName = "mie-navigation-control";
 
         private const string DefaultBindingPath = "m_Navigation";
@@ -31,6 +38,9 @@ namespace Mane.Unity.UI.Editor
         private string _bindingPath = DefaultBindingPath;
         private bool _bound;
 
+        /// <summary>
+        /// Builds the navigation fields and visualize button.
+        /// </summary>
         public UINavigationControl()
         {
             AddToClassList("mie-nested-block");
@@ -92,6 +102,9 @@ namespace Mane.Unity.UI.Editor
             });
         }
 
+        /// <summary>
+        /// Serialized path to the <see cref="Navigation"/> struct. Defaults to <c>m_Navigation</c>.
+        /// </summary>
         [UxmlAttribute("binding-path")]
         public string BindingPath
         {
@@ -99,6 +112,9 @@ namespace Mane.Unity.UI.Editor
             set => _bindingPath = string.IsNullOrEmpty(value) ? DefaultBindingPath : value;
         }
 
+        /// <summary>
+        /// Binds this control to <paramref name="serializedObject"/> at <see cref="BindingPath"/>.
+        /// </summary>
         public void Bind(SerializedObject serializedObject)
         {
             if (serializedObject == null)

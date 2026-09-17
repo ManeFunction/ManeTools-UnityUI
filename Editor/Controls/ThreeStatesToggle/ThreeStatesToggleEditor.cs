@@ -8,6 +8,9 @@ using Image = UnityEngine.UI.Image;
 
 namespace Mane.Unity.UI.Editor
 {
+    /// <summary>
+    /// Inspector for <see cref="ThreeStatesToggle"/>, including transition warnings and navigation.
+    /// </summary>
     [CanEditMultipleObjects]
     [CustomEditor(typeof(ThreeStatesToggle), true)]
     public class ThreeStatesToggleEditor : ManeEditor

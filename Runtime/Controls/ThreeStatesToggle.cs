@@ -6,22 +6,43 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
+    /// <summary>
+    /// Toggle with on, off, and undefined states. Click cycles on → off → undefined.
+    /// <see cref="Toggle.graphic"/> is the on visual; <see cref="offGraphic"/> and
+    /// <see cref="undefinedGraphic"/> cover the other two.
+    /// </summary>
     [AddComponentMenu("Mane Tools/UI/Three States Toggle")]
     public class ThreeStatesToggle : Toggle
     {
+        /// <summary>
+        /// Graphic shown while the toggle is off.
+        /// </summary>
         public Graphic offGraphic;
+
+        /// <summary>
+        /// Graphic shown while the toggle is undefined.
+        /// </summary>
         public Graphic undefinedGraphic;
         
         [SerializeField] private ToggleState _state = ToggleState.Undefined;
 
+        /// <summary>
+        /// Invoked when <see cref="State"/> changes. Argument is true, false, or null.
+        /// </summary>
         public ThreeStatesToggleEvent onStateValueChanged = new();
         
+        /// <summary>
+        /// Same as <see cref="onStateValueChanged"/>, as a C# event.
+        /// </summary>
         public event UnityAction<bool?> StateValueChanged
         {
             add => onStateValueChanged.AddListener(value.Invoke);
             remove => onStateValueChanged.RemoveListener(value.Invoke);
         }
 
+        /// <summary>
+        /// Binary on/off. Setting it also updates <see cref="State"/> to true or false.
+        /// </summary>
         public new bool isOn
         {
             get => base.isOn;
@@ -33,6 +54,9 @@ namespace Mane.Unity.UI
         }
 
         private const string ToggleGroupNotSupportedMessage = "Toggle group is not supported with ThreeStatesToggle";
+        /// <summary>
+        /// Not supported. Three-state toggles cannot belong to a <see cref="ToggleGroup"/>.
+        /// </summary>
         [Obsolete(ToggleGroupNotSupportedMessage, true)]
         public new ToggleGroup group
         {
@@ -40,6 +64,9 @@ namespace Mane.Unity.UI
             set => throw new NotSupportedException(ToggleGroupNotSupportedMessage);
         }
 
+        /// <summary>
+        /// Three-state value: true, false, or null (undefined).
+        /// </summary>
         public bool? State
         {
             get => StateToBool(_state);
@@ -129,6 +156,9 @@ namespace Mane.Unity.UI
             }
         }
 
+        /// <summary>
+        /// Cycles state on left click: on → off → undefined → on.
+        /// </summary>
         public override void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left)
@@ -143,6 +173,9 @@ namespace Mane.Unity.UI
         }
         
         
+        /// <summary>
+        /// UnityEvent raised with the new three-state value.
+        /// </summary>
         [Serializable]
         public class ThreeStatesToggleEvent : UnityEvent<bool?> { }
 

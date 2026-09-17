@@ -6,6 +6,9 @@ using UnityEngine.UIElements;
 
 namespace Mane.Unity.UI.Editor
 {
+    /// <summary>
+    /// Popup for <see cref="Navigation.Mode"/>, including flag combinations.
+    /// </summary>
     [UxmlElement]
     public sealed partial class NavigationModeField : BaseField<Navigation.Mode>
     {
@@ -20,8 +23,14 @@ namespace Mane.Unity.UI.Editor
         private VisualElement _overlay;
         private VisualElement _menu;
 
+        /// <summary>
+        /// Creates an unlabeled field.
+        /// </summary>
         public NavigationModeField() : this(null) { }
 
+        /// <summary>
+        /// Creates a field with <paramref name="label"/>.
+        /// </summary>
         public NavigationModeField(string label) : this(label, new VisualElement()) { }
 
         private NavigationModeField(string label, VisualElement input) : base(label, input)
@@ -50,6 +59,9 @@ namespace Mane.Unity.UI.Editor
             RefreshLabel();
         }
 
+        /// <summary>
+        /// Sets the mode without sending a change event, then refreshes the label and menu.
+        /// </summary>
         public override void SetValueWithoutNotify(Navigation.Mode newValue)
         {
             base.SetValueWithoutNotify(newValue);

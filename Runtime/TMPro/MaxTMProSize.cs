@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI
 {
+    /// <summary>
+    /// Caps a <see cref="TextMeshProUGUI"/> preferred size via <see cref="LayoutElement"/>.
+    /// Zero means no cap on that axis.
+    /// </summary>
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TextMeshProUGUI))]
@@ -20,6 +24,9 @@ namespace Mane.Unity.UI
         private string _oldValue = string.Empty;
 
 
+        /// <summary>
+        /// Max preferred width in pixels. Zero is unlimited.
+        /// </summary>
         public int MaxWidth
         {
             get => _maxWidth;
@@ -30,6 +37,9 @@ namespace Mane.Unity.UI
             }
         }
 
+        /// <summary>
+        /// Max preferred height in pixels. Zero is unlimited.
+        /// </summary>
         public int MaxHeight
         {
             get => _maxHeight;

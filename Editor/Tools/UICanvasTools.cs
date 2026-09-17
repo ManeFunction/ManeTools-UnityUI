@@ -7,10 +7,16 @@ using UnityEngine.UI;
 
 namespace Mane.Unity.UI.Editor
 {
+    /// <summary>
+    /// Scene helpers for placing UI under a Canvas and ensuring EventSystem exists.
+    /// </summary>
     public static class UICanvasTools
     {
         private const string UiLayerName = "UI";
 
+        /// <summary>
+        /// Parents <paramref name="element"/> under a Canvas (creating one if needed) and selects it.
+        /// </summary>
         public static void PlaceUIElement(GameObject element, MenuCommand menuCommand)
         {
             GameObject parent = menuCommand.context as GameObject;
@@ -39,6 +45,9 @@ namespace Mane.Unity.UI.Editor
             Selection.activeGameObject = element;
         }
 
+        /// <summary>
+        /// Returns a valid Canvas in the current stage, or creates one.
+        /// </summary>
         public static GameObject GetOrCreateCanvas()
         {
             GameObject selected = Selection.activeGameObject;
@@ -56,6 +65,9 @@ namespace Mane.Unity.UI.Editor
             return CreateCanvas();
         }
 
+        /// <summary>
+        /// True when <paramref name="canvas"/> is an active, non-hidden object in the current stage.
+        /// </summary>
         public static bool IsValidCanvas(Canvas canvas)
         {
             if (canvas == null || !canvas.gameObject.activeInHierarchy)
@@ -67,6 +79,9 @@ namespace Mane.Unity.UI.Editor
             return StageUtility.GetStageHandle(canvas.gameObject) == StageUtility.GetCurrentStageHandle();
         }
 
+        /// <summary>
+        /// Creates a Screen Space Overlay Canvas with scaler and raycaster.
+        /// </summary>
         public static GameObject CreateCanvas()
         {
             GameObject root = ObjectFactory.CreateGameObject("Canvas",
@@ -89,6 +104,9 @@ namespace Mane.Unity.UI.Editor
             return root;
         }
 
+        /// <summary>
+        /// Creates an EventSystem in the current stage if none exists.
+        /// </summary>
         public static void EnsureEventSystem()
         {
             StageHandle stage = StageUtility.GetCurrentStageHandle();
@@ -102,6 +120,9 @@ namespace Mane.Unity.UI.Editor
             Undo.RegisterCreatedObjectUndo(eventSystem, "Create " + eventSystem.name);
         }
 
+        /// <summary>
+        /// Parents <paramref name="child"/> under <paramref name="parent"/>, resets local transform, copies layer.
+        /// </summary>
         public static void SetParentAndAlign(GameObject child, GameObject parent)
         {
             if (parent == null)
@@ -127,6 +148,9 @@ namespace Mane.Unity.UI.Editor
             SetLayerRecursively(child, parent.layer);
         }
 
+        /// <summary>
+        /// Focuses the Hierarchy and starts rename on the next editor tick.
+        /// </summary>
         public static void BeginHierarchyRename()
         {
             EditorApplication.delayCall += () =>

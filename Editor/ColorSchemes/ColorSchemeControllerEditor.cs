@@ -9,6 +9,9 @@ using UnityObject = UnityEngine.Object;
 
 namespace Mane.Unity.UI.Editor
 {
+    /// <summary>
+    /// Inspector for <see cref="ColorSchemeController"/>: scheme asset plus per-color graphic lists.
+    /// </summary>
     [CustomEditor(typeof(ColorSchemeController), true)]
     public sealed class ColorSchemeControllerEditor : ManeEditor
     {
