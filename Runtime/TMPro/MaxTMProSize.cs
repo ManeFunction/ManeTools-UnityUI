@@ -15,11 +15,16 @@ namespace Mane.Unity.UI
     [AddComponentMenu("Mane Tools/UI/Max TMPro Size")]
     public class MaxTMProSize : MonoBehaviour, ILayoutElement
     {
+        // Same value TMP uses internally for an unbounded axis.
+        private const float UnlimitedHeight = 32767f;
+
+
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private LayoutElement _layoutElement;
 
         [SerializeField] private int _maxWidth;
         [SerializeField] private int _maxHeight;
+        [SerializeField] private bool _compactWidth;
 
 
         /// <summary>
@@ -44,6 +49,21 @@ namespace Mane.Unity.UI
             set
             {
                 _maxHeight = Mathf.Max(0, value);
+                MarkLayoutDirty();
+            }
+        }
+
+
+        /// <summary>
+        /// When the text wraps at <see cref="MaxWidth"/>, shrink the width to the widest line
+        /// instead of keeping the full <see cref="MaxWidth"/>. Has no effect when <see cref="MaxWidth"/> is zero.
+        /// </summary>
+        public bool CompactWidth
+        {
+            get => _compactWidth;
+            set
+            {
+                _compactWidth = value;
                 MarkLayoutDirty();
             }
         }
@@ -84,7 +104,7 @@ namespace Mane.Unity.UI
             if (!_text || !_layoutElement)
                 return;
 
-            _layoutElement.preferredWidth = _maxWidth > 0 ? Mathf.Min(_text.preferredWidth, _maxWidth) : -1f;
+            _layoutElement.preferredWidth = _maxWidth > 0 ? GetCappedWidth() : -1f;
         }
 
         void ILayoutElement.CalculateLayoutInputVertical()
@@ -94,6 +114,29 @@ namespace Mane.Unity.UI
 
             // By now the horizontal pass has set the final width, so TMP wraps at the width it is going to have.
             _layoutElement.preferredHeight = _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
+        }
+
+        /// <summary>
+        /// The text width if it fits in <see cref="MaxWidth"/>, otherwise <see cref="MaxWidth"/>, or the width
+        /// of the widest line after wrapping at <see cref="MaxWidth"/> with <see cref="CompactWidth"/>,
+        /// so a wrapped word does not leave an empty gap on the right.
+        /// </summary>
+        private float GetCappedWidth()
+        {
+            // Unwrapped width: TMP measures preferred width as a single line.
+            float singleLine = _text.preferredWidth;
+            if (singleLine <= _maxWidth)
+                return singleLine;
+
+            if (!_compactWidth)
+                return _maxWidth;
+
+            // The text area excludes the component margins, but the returned width includes them.
+            Vector4 margin = _text.margin;
+            float textArea = _maxWidth - Mathf.Max(0f, margin.x) - Mathf.Max(0f, margin.z);
+
+            float wrapped = _text.GetPreferredValues(_text.text, textArea, UnlimitedHeight).x;
+            return Mathf.Min(wrapped, _maxWidth);
         }
 
         private void MarkLayoutDirty()
