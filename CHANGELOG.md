@@ -18,3 +18,6 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 - All Editor inspectors were re-styled with the new `Mane Style` tool and moved to the modern `UI Toolkit` system.
 - `ThreeStateToggle` was renamed to `ThreeStatesToggle`.
 - `ManeBehaviour` was renamed to `ManeUIBehaviour` and left exclusively for easy access to `rectTransform` from your UI components.
+
+### Fixed
+- `MaxTMProSize` could leave the `LayoutElement` preferred height too big (an extra line) after typing new glyphs following spaces, until the next text change. TMP wraps its preferred height at the current RectTransform width, and the component read it in `Update`, before the layout had assigned the new width. The limits are now calculated inside the layout pass, after the width is known.

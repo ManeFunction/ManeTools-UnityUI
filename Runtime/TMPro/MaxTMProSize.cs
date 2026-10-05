@@ -13,15 +13,13 @@ namespace Mane.Unity.UI
     [RequireComponent(typeof(TextMeshProUGUI))]
     [RequireComponent(typeof(LayoutElement))]
     [AddComponentMenu("Mane Tools/UI/Max TMPro Size")]
-    public class MaxTMProSize : MonoBehaviour
+    public class MaxTMProSize : MonoBehaviour, ILayoutElement
     {
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private LayoutElement _layoutElement;
 
         [SerializeField] private int _maxWidth;
         [SerializeField] private int _maxHeight;
-
-        private string _oldValue = string.Empty;
 
 
         /// <summary>
@@ -33,7 +31,7 @@ namespace Mane.Unity.UI
             set
             {
                 _maxWidth = Mathf.Max(0, value);
-                ReCalculateLayout();
+                MarkLayoutDirty();
             }
         }
 
@@ -46,9 +44,20 @@ namespace Mane.Unity.UI
             set
             {
                 _maxHeight = Mathf.Max(0, value);
-                ReCalculateLayout();
+                MarkLayoutDirty();
             }
         }
+
+
+        // This component only writes into the sibling LayoutElement, it has no layout opinion of its own.
+        // Negative values are ignored by LayoutUtility.
+        float ILayoutElement.minWidth => -1f;
+        float ILayoutElement.preferredWidth => -1f;
+        float ILayoutElement.flexibleWidth => -1f;
+        float ILayoutElement.minHeight => -1f;
+        float ILayoutElement.preferredHeight => -1f;
+        float ILayoutElement.flexibleHeight => -1f;
+        int ILayoutElement.layoutPriority => 0;
 
 
 #if UNITY_EDITOR
@@ -57,32 +66,40 @@ namespace Mane.Unity.UI
             _text = gameObject.GetOrAddComponent<TextMeshProUGUI>();
             _layoutElement = gameObject.GetOrAddComponent<LayoutElement>();
 
-            ReCalculateLayout();
+            MarkLayoutDirty();
         }
 
         protected void OnValidate()
         {
             _maxWidth = Mathf.Max(0, _maxWidth);
             _maxHeight = Mathf.Max(0, _maxHeight);
-            ReCalculateLayout();
+            MarkLayoutDirty();
         }
 #endif
 
-        protected void Update()
-        {
-            if (!_text || _text.text == _oldValue) return;
+        protected void OnEnable() => MarkLayoutDirty();
 
-            _oldValue = _text.text;
-            ReCalculateLayout();
-        }
-
-        private void ReCalculateLayout()
+        void ILayoutElement.CalculateLayoutInputHorizontal()
         {
             if (!_text || !_layoutElement)
                 return;
 
             _layoutElement.preferredWidth = _maxWidth > 0 ? Mathf.Min(_text.preferredWidth, _maxWidth) : -1f;
+        }
+
+        void ILayoutElement.CalculateLayoutInputVertical()
+        {
+            if (!_text || !_layoutElement)
+                return;
+
+            // By now the horizontal pass has set the final width, so TMP wraps at the width it is going to have.
             _layoutElement.preferredHeight = _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
+        }
+
+        private void MarkLayoutDirty()
+        {
+            if (transform is RectTransform rectTransform)
+                LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
         }
     }
 }
