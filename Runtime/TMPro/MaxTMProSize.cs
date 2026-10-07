@@ -22,20 +22,20 @@ namespace Mane.Unity.UI
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private LayoutElement _layoutElement;
 
-        [SerializeField] private int _maxWidth;
-        [SerializeField] private int _maxHeight;
+        [SerializeField] private float _maxWidth;
+        [SerializeField] private float _maxHeight;
         [SerializeField] private bool _compactWidth;
 
 
         /// <summary>
         /// Max preferred width in pixels. Zero is unlimited.
         /// </summary>
-        public int MaxWidth
+        public float MaxWidth
         {
             get => _maxWidth;
             set
             {
-                _maxWidth = Mathf.Max(0, value);
+                _maxWidth = Mathf.Max(0f, value);
                 MarkLayoutDirty();
             }
         }
@@ -43,12 +43,12 @@ namespace Mane.Unity.UI
         /// <summary>
         /// Max preferred height in pixels. Zero is unlimited.
         /// </summary>
-        public int MaxHeight
+        public float MaxHeight
         {
             get => _maxHeight;
             set
             {
-                _maxHeight = Mathf.Max(0, value);
+                _maxHeight = Mathf.Max(0f, value);
                 MarkLayoutDirty();
             }
         }
@@ -91,8 +91,8 @@ namespace Mane.Unity.UI
 
         protected void OnValidate()
         {
-            _maxWidth = Mathf.Max(0, _maxWidth);
-            _maxHeight = Mathf.Max(0, _maxHeight);
+            _maxWidth = Mathf.Max(0f, _maxWidth);
+            _maxHeight = Mathf.Max(0f, _maxHeight);
             MarkLayoutDirty();
         }
 #endif

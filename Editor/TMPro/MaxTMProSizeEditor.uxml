@@ -11,11 +11,11 @@
 
     <ui:VisualElement class="mie-block">
         <ui:Label text="Settings" class="mie-header" />
-        <mie:LimitedValueField binding-path="_maxWidth" label="Max Width" zero-label="Unlimited"
+        <mie:LimitedFloatField binding-path="_maxWidth" label="Max Width" zero-label="Unlimited"
                                tooltip="0 leaves LayoutElement preferred width unconstrained." />
         <uie:PropertyField name="compactWidthField" binding-path="_compactWidth" label="Compact Width"
                            tooltip="When the text wraps at Max Width, shrink the width to the widest line instead of keeping the full Max Width." />
-        <mie:LimitedValueField binding-path="_maxHeight" label="Max Height" zero-label="Unlimited"
+        <mie:LimitedFloatField binding-path="_maxHeight" label="Max Height" zero-label="Unlimited"
                                tooltip="0 leaves LayoutElement preferred height unconstrained." />
     </ui:VisualElement>
 </ui:UXML>

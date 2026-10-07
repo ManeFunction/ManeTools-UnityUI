@@ -33,7 +33,7 @@ namespace Mane.Unity.UI.Editor
         private void UpdateVisibility()
         {
             serializedObject.UpdateIfRequiredOrScript();
-            SetVisible(_compactWidth, serializedObject.FindProperty("_maxWidth").intValue > 0);
+            SetVisible(_compactWidth, serializedObject.FindProperty("_maxWidth").floatValue > 0f);
         }
 
         private static void SetVisible(VisualElement element, bool visible) =>
