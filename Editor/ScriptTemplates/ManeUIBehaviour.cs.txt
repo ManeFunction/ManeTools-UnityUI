@@ -1,0 +1,9 @@
+using Mane.Unity.UI;
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : ManeUIBehaviour
+{
+    #NOTRIM#
+}
+#ROOTNAMESPACEEND#

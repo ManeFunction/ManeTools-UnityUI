@@ -14,6 +14,7 @@ Add components from **Add Component → Mane Tools → UI**.
 - `ScrollRect` snap helpers (`SnapTo`, `SnapXTo`, `SnapYTo`).
 - `RectTransformChangedCatcher` and `ManeUIBehaviour` for layout change callbacks and easy access to `rectTransform`, the same way as `transform`.
 - `UICanvasTools` helpers that ease working with UI layouts.
+- Script creation menus for standard `UIBehaviour` and custom `ManeUIBehaviour`.
 - NUnit coverage for most of the package.
 
 ## Installation

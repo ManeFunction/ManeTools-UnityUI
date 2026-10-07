@@ -1,0 +1,9 @@
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : UIBehaviour
+{
+    #NOTRIM#
+}
+#ROOTNAMESPACEEND#

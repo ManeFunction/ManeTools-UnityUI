@@ -13,6 +13,7 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 ### Added
 - `ThreeStatesToggle` now has its own pre-constructed sample, like the base `Toggle`. You can add it to the scene from the `UI Canvas > Three States Toggle` context menu.
 - Not a big feature, but if you are planning to build your own runtime controls and use `Mane Style` editors, you can reuse the pre-built foldable `Interaction` block (`UIInteractionControl`: Interactable, Transition and `UINavigationControl`) in your `Selectable` inspectors. `UINavigationControl` can also be used on its own.
+- Added **Create → Scripting → UIBehaviour** and **Create → Scripting → ManeUIBehaviour**. They create those scripts the same way as the built-in scripting templates, with an empty class body.
 
 ### Changed
 - All Editor inspectors were re-styled with the new `Mane Style` tool and moved to the modern `UI Toolkit` system.
