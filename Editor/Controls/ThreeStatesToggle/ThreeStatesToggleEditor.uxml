@@ -4,19 +4,7 @@
          xmlns:mui="Mane.Unity.UI.Editor"
          editor-extension-mode="True">
 
-    <mie:FoldoutBlock name="interaction" text="Interaction" collapsed-by-default="true">
-        <uie:PropertyField name="interactable" binding-path="m_Interactable" label="Interactable" />
-
-        <ui:VisualElement name="transitionBlock" class="mie-nested-block">
-            <uie:PropertyField name="selectableTransition" binding-path="m_Transition" label="Transition" />
-            <uie:PropertyField name="targetGraphic" binding-path="m_TargetGraphic" label="Target Graphic" />
-            <uie:PropertyField name="colors" binding-path="m_Colors" label="Colors" />
-            <uie:PropertyField name="spriteState" binding-path="m_SpriteState" label="Sprite State" />
-            <uie:PropertyField name="animationTriggers" binding-path="m_AnimationTriggers" label="Animation Triggers" />
-        </ui:VisualElement>
-
-        <mui:UINavigationControl name="navigation" />
-    </mie:FoldoutBlock>
+    <mui:UIInteractionControl name="interaction" />
 
     <ui:VisualElement class="mie-block">
         <ui:Label text="Toggle" class="mie-header" />
