@@ -173,8 +173,8 @@ namespace Mane.Unity.UI
 
 
 #if UNITY_EDITOR
-        public const string GraphicPropertyName = nameof(_graphic);
-        public const string ColorSchemePropertyName = nameof(_colorScheme);
+        internal const string GraphicPropertyName = nameof(_graphic);
+        internal const string ColorSchemePropertyName = nameof(_colorScheme);
 #endif
     }
 }

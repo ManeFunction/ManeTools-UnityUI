@@ -23,7 +23,7 @@ namespace Mane.Unity.UI
             _colors == null || index < 0 || index >= _colors.Length ? Color.white : _colors[index];
 
 #if UNITY_EDITOR
-        public const string ColorsPropertyName = nameof(_colors);
+        internal const string ColorsPropertyName = nameof(_colors);
 #endif
     }
 }
