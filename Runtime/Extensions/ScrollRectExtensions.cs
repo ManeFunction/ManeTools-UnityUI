@@ -22,9 +22,11 @@ namespace Mane.Unity.UI
             Vector2 childPos = scroll.transform.InverseTransformPoint(item.position);
             Vector2 endPos = contentPos - childPos;
 
-            if (!scroll.horizontal) endPos.x = contentPos.x;
-            if (!scroll.vertical) endPos.y = contentPos.y;
-            scroll.content.anchoredPosition = endPos + offset;
+            Vector2 current = scroll.content.anchoredPosition;
+            Vector2 target = endPos + offset;
+            if (!scroll.horizontal) target.x = current.x;
+            if (!scroll.vertical) target.y = current.y;
+            scroll.content.anchoredPosition = target;
         }
 
         // Optimized versions
@@ -39,7 +41,7 @@ namespace Mane.Unity.UI
             float childPos = scroll.transform.InverseTransformPoint(item.position).x;
             float x = contentPos.x - childPos;
 
-            scroll.content.anchoredPosition = new Vector2(x + offset, contentPos.y);
+            scroll.content.anchoredPosition = new Vector2(x + offset, scroll.content.anchoredPosition.y);
         }
         
         /// <summary>
@@ -53,7 +55,7 @@ namespace Mane.Unity.UI
             float childPos = scroll.transform.InverseTransformPoint(item.position).y;
             float y = contentPos.y - childPos;
 
-            scroll.content.anchoredPosition = new Vector2(contentPos.x, y + offset);
+            scroll.content.anchoredPosition = new Vector2(scroll.content.anchoredPosition.x, y + offset);
         }
     }
 }
