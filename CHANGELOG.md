@@ -20,6 +20,7 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 - `ThreeStateToggle` was renamed to `ThreeStatesToggle`.
 - `ManeBehaviour` was renamed to `ManeUIBehaviour` and left exclusively for easy access to `rectTransform` from your UI components.
 - `MaxTMProSize` can now fit the width to the widest wrapped line when the text exceeds `Max Width`, instead of always using the full `Max Width`, so a word that wraps to the next line no longer leaves an empty gap on the right. It is controlled by the new `Compact Width` option (off by default), which is shown only while `Max Width` is set.
+- `MaxTMProSize` no longer needs a `LayoutElement`. It is a layout element itself, with layout priority 2, so it no longer overwrites values set on a `LayoutElement`, does not dirty scenes in edit mode, and its caps go away when it is disabled or removed.
 
 ### Fixed
-- `MaxTMProSize` could leave the `LayoutElement` preferred height too big (an extra line) after typing new glyphs following spaces, until the next text change. TMP wraps its preferred height at the current RectTransform width, and the component read it in `Update`, before the layout had assigned the new width. The limits are now calculated inside the layout pass, after the width is known.
+- `MaxTMProSize` could leave the preferred height too big (an extra line) after typing new glyphs following spaces, until the next text change. TMP wraps its preferred height at the current RectTransform width, and the component read it in `Update`, before the layout had assigned the new width. The limits are now calculated inside the layout pass, after the width is known.

@@ -6,16 +6,15 @@
     <ui:VisualElement class="mie-block">
         <ui:Label text="Components" class="mie-header" />
         <uie:PropertyField name="textField" binding-path="_text" label="Text" />
-        <uie:PropertyField name="layoutElementField" binding-path="_layoutElement" label="Layout Element" />
     </ui:VisualElement>
 
     <ui:VisualElement class="mie-block">
         <ui:Label text="Settings" class="mie-header" />
         <mie:LimitedFloatField binding-path="_maxWidth" label="Max Width" zero-label="Unlimited"
-                               tooltip="0 leaves LayoutElement preferred width unconstrained." />
+                               tooltip="0 leaves the preferred width unconstrained." />
         <uie:PropertyField name="compactWidthField" binding-path="_compactWidth" label="Compact Width"
                            tooltip="When the text wraps at Max Width, shrink the width to the widest line instead of keeping the full Max Width." />
         <mie:LimitedFloatField binding-path="_maxHeight" label="Max Height" zero-label="Unlimited"
-                               tooltip="0 leaves LayoutElement preferred height unconstrained." />
+                               tooltip="0 leaves the preferred height unconstrained." />
     </ui:VisualElement>
 </ui:UXML>

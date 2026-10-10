@@ -5,22 +5,24 @@ using UnityEngine.UI;
 namespace Mane.Unity.UI
 {
     /// <summary>
-    /// Caps a <see cref="TextMeshProUGUI"/> preferred size via <see cref="LayoutElement"/>.
+    /// Caps a <see cref="TextMeshProUGUI"/> preferred size. Acts as a layout element with
+    /// layout priority 2, so the capped value overrides the text and a default <see cref="LayoutElement"/>.
     /// Zero means no cap on that axis.
     /// </summary>
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TextMeshProUGUI))]
-    [RequireComponent(typeof(LayoutElement))]
     [AddComponentMenu("Mane Tools/UI/Max TMPro Size")]
     public class MaxTMProSize : MonoBehaviour, ILayoutElement
     {
         // Same value TMP uses internally for an unbounded axis.
         private const float UnlimitedHeight = 32767f;
 
+        // Above TextMeshProUGUI (0) and a default LayoutElement (1).
+        private const int LayoutPriority = 2;
+
 
         [SerializeField] private TextMeshProUGUI _text;
-        [SerializeField] private LayoutElement _layoutElement;
 
         [SerializeField] private float _maxWidth;
         [SerializeField] private float _maxHeight;
@@ -69,22 +71,24 @@ namespace Mane.Unity.UI
         }
 
 
-        // This component only writes into the sibling LayoutElement, it has no layout opinion of its own.
-        // Negative values are ignored by LayoutUtility.
+        // Capped values from the last layout pass. Negative values (no cap) are ignored by LayoutUtility,
+        // so the text's own preferred size, or a LayoutElement's, applies.
+        private float _preferredWidth = -1f;
+        private float _preferredHeight = -1f;
+
         float ILayoutElement.minWidth => -1f;
-        float ILayoutElement.preferredWidth => -1f;
+        float ILayoutElement.preferredWidth => _preferredWidth;
         float ILayoutElement.flexibleWidth => -1f;
         float ILayoutElement.minHeight => -1f;
-        float ILayoutElement.preferredHeight => -1f;
+        float ILayoutElement.preferredHeight => _preferredHeight;
         float ILayoutElement.flexibleHeight => -1f;
-        int ILayoutElement.layoutPriority => 0;
+        int ILayoutElement.layoutPriority => LayoutPriority;
 
 
 #if UNITY_EDITOR
         protected void Reset()
         {
             _text = gameObject.GetOrAddComponent<TextMeshProUGUI>();
-            _layoutElement = gameObject.GetOrAddComponent<LayoutElement>();
 
             MarkLayoutDirty();
         }
@@ -99,22 +103,15 @@ namespace Mane.Unity.UI
 
         protected void OnEnable() => MarkLayoutDirty();
 
-        void ILayoutElement.CalculateLayoutInputHorizontal()
-        {
-            if (!_text || !_layoutElement)
-                return;
+        // The layout skips disabled components, so the parent only has to recalculate without the caps.
+        protected void OnDisable() => MarkLayoutDirty();
 
-            _layoutElement.preferredWidth = _maxWidth > 0 ? GetCappedWidth() : -1f;
-        }
+        void ILayoutElement.CalculateLayoutInputHorizontal() =>
+            _preferredWidth = _text && _maxWidth > 0 ? GetCappedWidth() : -1f;
 
-        void ILayoutElement.CalculateLayoutInputVertical()
-        {
-            if (!_text || !_layoutElement)
-                return;
-
-            // By now the horizontal pass has set the final width, so TMP wraps at the width it is going to have.
-            _layoutElement.preferredHeight = _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
-        }
+        // By now the horizontal pass has set the final width, so TMP wraps at the width it is going to have.
+        void ILayoutElement.CalculateLayoutInputVertical() =>
+            _preferredHeight = _text && _maxHeight > 0 ? Mathf.Min(_text.preferredHeight, _maxHeight) : -1f;
 
         /// <summary>
         /// The text width if it fits in <see cref="MaxWidth"/>, otherwise <see cref="MaxWidth"/>, or the width

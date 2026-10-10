@@ -10,7 +10,7 @@ Add components from **Add Component → Mane Tools → UI**.
 
 - `ColorScheme` assets and `ColorSchemeController` to apply and switch color themes on simple UI graphics.
 - `ThreeStatesToggle` - on / off / undefined, with optional extra graphics.
-- `MaxTMProSize` - clamp a TextMesh Pro label's preferred size through a `LayoutElement`.
+- `MaxTMProSize` - clamp a TextMesh Pro label's preferred size.
 - `ScrollRect` snap helpers (`SnapTo`, `SnapXTo`, `SnapYTo`).
 - `RectTransformChangedCatcher` and `ManeUIBehaviour` for layout change callbacks and easy access to `rectTransform`, the same way as `transform`.
 - `UICanvasTools` helpers that ease working with UI layouts.
