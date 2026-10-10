@@ -25,5 +25,6 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 ### Fixed
 - `ThreeStatesToggle.StateValueChanged -= handler` did not remove the handler.
 - `ThreeStatesToggle` could be clicked while not interactable, and Submit (keyboard or gamepad) flipped `isOn` without changing `State`. Both now cycle the state and respect `interactable`.
+- `ColorSchemeController` could end with wrong colors: setting `ColorScheme` did not stop a running `AnimateTo`, which then painted over the new scheme, and an animation cut short by deactivation, or started while inactive, never applied the target colors.
 - `ScrollRect` snapping wrote a wrong value to the axis it does not snap, so in the default Scroll View a vertical list jumped sideways by half the view width.
 - `MaxTMProSize` could leave the preferred height too big (an extra line) after typing new glyphs following spaces, until the next text change. TMP wraps its preferred height at the current RectTransform width, and the component read it in `Update`, before the layout had assigned the new width. The limits are now calculated inside the layout pass, after the width is known.

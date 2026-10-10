@@ -15,30 +15,46 @@ namespace Mane.Unity.UI
     {
         [SerializeField] protected GraphicCollection[] _graphic;
         [SerializeField] private ColorScheme _colorScheme;
+
+        private Coroutine _animation;
         
         /// <summary>
-        /// Active palette. Setting it applies colors immediately.
+        /// Active palette. Setting it stops a running <see cref="AnimateTo"/> and applies colors immediately.
         /// </summary>
         public ColorScheme ColorScheme
         {
             get => _colorScheme;
             set
             {
+                StopAnimation();
                 _colorScheme = value;
                 Refresh();
             }
         }
 
-        protected override void Awake() => Refresh();
+        // The scheme is assigned when an animation starts, so re-applying it here also finishes
+        // an animation that was cut short by deactivation.
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            Refresh();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            // Unity has already stopped the coroutine.
+            _animation = null;
+        }
 
         /// <summary>
         /// Lerps graphic colors toward <paramref name="colorScheme"/> over <paramref name="duration"/> seconds.
-        /// Snaps immediately when duration is not positive or there is no current scheme.
-        /// Does nothing when the target is null or the color counts differ.
+        /// Snaps immediately when duration is not positive, there is no current scheme, or the controller
+        /// is inactive. Does nothing when the target is null or the color counts differ.
         /// </summary>
         public void AnimateTo(ColorScheme colorScheme, float duration, AnimationCurve animationCurve = null)
         {
-            if (duration <= 0f || _colorScheme == null)
+            if (duration <= 0f || _colorScheme == null || !isActiveAndEnabled)
             {
                 ColorScheme = colorScheme;
                 return;
@@ -49,9 +65,18 @@ namespace Mane.Unity.UI
 
             animationCurve ??= AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
+            StopAnimation();
             SetColorSchemeWithoutRefresh(colorScheme);
-            StopAllCoroutines();
-            StartCoroutine(AnimateCoroutine(colorScheme, duration, animationCurve));
+            _animation = StartCoroutine(AnimateCoroutine(colorScheme, duration, animationCurve));
+        }
+
+        private void StopAnimation()
+        {
+            if (_animation == null)
+                return;
+
+            StopCoroutine(_animation);
+            _animation = null;
         }
 
         private IEnumerator AnimateCoroutine(ColorScheme targetScheme, float duration,
@@ -74,6 +99,8 @@ namespace Mane.Unity.UI
 
             for (int i = 0; i < targetScheme.Length; i++)
                 SetGraphicsColor(i, targetScheme[i]);
+
+            _animation = null;
         }
 
         /// <summary>
