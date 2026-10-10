@@ -36,8 +36,8 @@ namespace Mane.Unity.UI
         /// </summary>
         public event UnityAction<bool?> StateValueChanged
         {
-            add => onStateValueChanged.AddListener(value.Invoke);
-            remove => onStateValueChanged.RemoveListener(value.Invoke);
+            add => onStateValueChanged.AddListener(value);
+            remove => onStateValueChanged.RemoveListener(value);
         }
 
         /// <summary>
