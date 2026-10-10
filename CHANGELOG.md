@@ -24,4 +24,5 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 
 ### Fixed
 - `ThreeStatesToggle.StateValueChanged -= handler` did not remove the handler.
+- `ThreeStatesToggle` could be clicked while not interactable, and Submit (keyboard or gamepad) flipped `isOn` without changing `State`. Both now cycle the state and respect `interactable`.
 - `MaxTMProSize` could leave the preferred height too big (an extra line) after typing new glyphs following spaces, until the next text change. TMP wraps its preferred height at the current RectTransform width, and the component read it in `Update`, before the layout had assigned the new width. The limits are now calculated inside the layout pass, after the width is known.

@@ -158,10 +158,25 @@ namespace Mane.Unity.UI
 
         /// <summary>
         /// Cycles state on left click: on → off → undefined → on.
+        /// Does nothing while the toggle is inactive or not interactable.
         /// </summary>
         public override void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left)
+                return;
+
+            CycleState();
+        }
+
+        /// <summary>
+        /// Cycles state on submit (keyboard or gamepad), the same way as a click.
+        /// </summary>
+        public override void OnSubmit(BaseEventData eventData) => CycleState();
+
+        // Replaces the base Toggle.InternalToggle, which flips isOn without touching State.
+        private void CycleState()
+        {
+            if (!IsActive() || !IsInteractable())
                 return;
 
             switch (State)
