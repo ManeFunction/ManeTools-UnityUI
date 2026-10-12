@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "com.unity.ugui": "2.0.0",
+    "com.manefunction.tools-dotnet": "2.0.0-preview.2",
     "com.manefunction.tools-unity": "2.0.0-preview.1"
   },
   "keywords": [

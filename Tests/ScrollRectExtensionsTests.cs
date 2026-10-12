@@ -1,3 +1,4 @@
+using Mane.DotNet;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
@@ -227,6 +228,290 @@ namespace Mane.Unity.UI.Tests
             {
                 Object.DestroyImmediate(root);
             }
+        }
+
+        private const float FrameTime = 1f / 60f;
+
+        private static readonly AnimationCurve[] Curves =
+        {
+            Easing.Linear, Easing.QuadIn, Easing.CubicOut, Easing.SinInOut, Easing.ExpoInOut,
+            Easing.CircOut, Easing.BackOut, Easing.BounceOut, Easing.ElasticOut, Easing.Spring
+        };
+
+        private static readonly AnimationCurve[] SmoothCurves =
+        {
+            Easing.Linear, Easing.QuadIn, Easing.QuadOut, Easing.CubicInOut, Easing.SinOut, Easing.ExpoIn
+        };
+
+        // Item 600 from the top: the content moves 450, item 375: 225. Default limits are 0.25–0.8 seconds.
+        [TestCase(600f, 900f, .5f, TestName = "ScrollYTo_Duration_DistanceBySpeed")]
+        [TestCase(375f, 900f, .25f, TestName = "ScrollYTo_Duration_DistanceBySpeed_AtMin")]
+        [TestCase(600f, 150f, .8f, TestName = "ScrollYTo_Duration_TooSlow_ClampedToMax")]
+        [TestCase(375f, 9000f, .25f, TestName = "ScrollYTo_Duration_TooFast_ClampedToMin")]
+        public void ScrollYTo_Duration_DefaultLimits(float itemFromTop, float speed, float expected)
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -itemFromTop));
+
+                ScrollRectAnimation animation = CreateAnimationY(scroll, item, speed, Easing.QuadOut);
+                Assert.AreEqual(expected, animation.Duration, 0.0001f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        // 450 at 900 per second is 0.5 seconds before the limits.
+        [TestCase(0f, 10f, .5f, TestName = "ScrollYTo_Duration_WideLimits_Unchanged")]
+        [TestCase(1f, 2f, 1f, TestName = "ScrollYTo_Duration_CustomMin")]
+        [TestCase(.1f, .2f, .2f, TestName = "ScrollYTo_Duration_CustomMax")]
+        [TestCase(.3f, .1f, .3f, TestName = "ScrollYTo_Duration_ReversedLimits")]
+        public void ScrollYTo_Duration_CustomLimits(float a, float b, float expected)
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                ScrollRectAnimation animation = ScrollRectExtensions.CreateAnimation(
+                    scroll, item, 900f, Easing.QuadOut, Vector2.zero, new MinMaxFloat(a, b), false, true);
+                Assert.AreEqual(expected, animation.Duration, 0.0001f);
+
+                RunToEnd(animation);
+                Assert.AreEqual(450f, scroll.content.anchoredPosition.y, 0.001f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [TestCaseSource(nameof(Curves))]
+        public void ScrollYTo_EndsOnSnapPosition(AnimationCurve easing)
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                ScrollRectAnimation animation = CreateAnimationY(scroll, item, 900f, easing);
+                int frames = RunToEnd(animation);
+
+                Assert.AreEqual(450f, scroll.content.anchoredPosition.y, 0.001f);
+                Assert.AreEqual(0f, scroll.content.anchoredPosition.x, 0.001f);
+                Assert.AreEqual(Mathf.CeilToInt(animation.Duration / FrameTime), frames, 1);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [TestCaseSource(nameof(SmoothCurves))]
+        public void ScrollYTo_FollowsEasing(AnimationCurve easing)
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                // 450 at 900 per second: 0.5 seconds.
+                ScrollRectAnimation animation = CreateAnimationY(scroll, item, 900f, easing);
+                for (float time = .1f; time < .45f; time += .1f)
+                {
+                    Assert.IsTrue(animation.Step(.1f));
+                    Assert.AreEqual(450f * easing.Evaluate(time / .5f), scroll.content.anchoredPosition.y, 0.01f);
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void ScrollYTo_Overshoot_PassesTargetInsideContent()
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                float furthest = RunToEnd(CreateAnimationY(scroll, item, 900f, Easing.BackOut), scroll);
+
+                Assert.Greater(furthest, 451f);
+                Assert.AreEqual(450f, scroll.content.anchoredPosition.y, 0.001f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [TestCase(950f, 700f)]
+        [TestCase(50f, 0f)]
+        public void ScrollYTo_Overshoot_StopsAtContentEdge(float itemFromTop, float edge)
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -itemFromTop));
+                foreach (AnimationCurve easing in new[] { Easing.BackOut, Easing.ElasticOut, Easing.Spring })
+                {
+                    // Start mid-way, so the move toward the edge can overshoot it.
+                    scroll.content.anchoredPosition = new Vector2(0f, 350f);
+                    ScrollRectAnimation animation = CreateAnimationY(scroll, item, 900f, easing);
+                    while (animation.Step(FrameTime))
+                    {
+                        Assert.That(scroll.content.anchoredPosition.y, Is.InRange(-0.001f, 700.001f));
+                    }
+
+                    Assert.AreEqual(edge, scroll.content.anchoredPosition.y, 0.001f);
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void ScrollXTo_HorizontalList_EndsCentered()
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateDefaultScrollView(root, horizontal: true);
+                RectTransform content = scroll.content;
+                content.anchorMin = Vector2.zero;
+                content.anchorMax = new Vector2(0f, 1f);
+                content.pivot = new Vector2(0.5f, 0.5f);
+                content.sizeDelta = new Vector2(1000f, 0f);
+                content.anchoredPosition = new Vector2(500f, 0f);
+
+                RectTransform item = CreateItem(content, new Vector2(0f, 0.5f), new Vector2(600f, 0f));
+
+                ScrollRectAnimation animation =
+                    ScrollRectExtensions.CreateAnimation(scroll, item, 900f, Easing.QuadInOut, Vector2.zero, null, true, false);
+                Assert.AreEqual(.5f, animation.Duration, 0.0001f);
+                RunToEnd(animation);
+
+                AssertPosition(new Vector2(50f, 0f), content);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void ScrollYTo_MovedElsewhere_Stops()
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                ScrollRectAnimation animation = CreateAnimationY(scroll, item, 900f, Easing.SinInOut);
+                Assert.IsTrue(animation.Step(FrameTime));
+
+                // A drag moves the content between steps.
+                scroll.content.anchoredPosition = new Vector2(0f, 120f);
+                Assert.IsFalse(animation.Step(FrameTime));
+                Assert.AreEqual(120f, scroll.content.anchoredPosition.y, 0.001f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void ScrollTo_NothingToAnimate_ReturnsNoAnimation()
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                // No room on X, no speed, and already centered.
+                Assert.IsNull(ScrollRectExtensions.CreateAnimation(scroll, item, 900f, Easing.Linear, Vector2.zero, null, true, false));
+                Assert.IsNull(CreateAnimationY(scroll, item, 0f, Easing.Linear));
+                scroll.SnapYTo(item);
+                Assert.IsNull(CreateAnimationY(scroll, item, 900f, Easing.Linear));
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void ScrollTo_OutsidePlayMode_Snaps()
+        {
+            GameObject root = new("ScrollRoot");
+            try
+            {
+                ScrollRect scroll = CreateVerticalList(root);
+                RectTransform item = CreateItem(scroll.content, new Vector2(0.5f, 1f), new Vector2(0f, -600f));
+
+                Assert.IsNull(scroll.ScrollTo(item, 900f, Easing.CubicOut));
+                AssertPosition(new Vector2(0f, 450f), scroll.content);
+
+                scroll.content.anchoredPosition = Vector2.zero;
+                Assert.IsNull(scroll.ScrollXTo(item, 900f, Easing.CubicOut));
+                AssertPosition(Vector2.zero, scroll.content);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
+        private static ScrollRectAnimation CreateAnimationY(ScrollRect scroll, Transform item, float speed, AnimationCurve easing) =>
+            ScrollRectExtensions.CreateAnimation(scroll, item, speed, easing, Vector2.zero, null, false, true);
+
+        private static int RunToEnd(ScrollRectAnimation animation)
+        {
+            int frames = 1;
+            while (animation.Step(FrameTime))
+                frames++;
+
+            return frames;
+        }
+
+        // Returns the furthest Y the content reached.
+        private static float RunToEnd(ScrollRectAnimation animation, ScrollRect scroll)
+        {
+            float furthest = scroll.content.anchoredPosition.y;
+            while (animation.Step(FrameTime))
+                furthest = Mathf.Max(furthest, scroll.content.anchoredPosition.y);
+
+            return Mathf.Max(furthest, scroll.content.anchoredPosition.y);
+        }
+
+        // Vertical "Scroll View" with a 1000-high top-stretch Content.
+        private static ScrollRect CreateVerticalList(GameObject root)
+        {
+            ScrollRect scroll = CreateDefaultScrollView(root, horizontal: false);
+            RectTransform content = scroll.content;
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = Vector2.one;
+            content.pivot = new Vector2(0f, 1f);
+            content.sizeDelta = new Vector2(0f, 1000f);
+            content.anchoredPosition = Vector2.zero;
+            return scroll;
         }
 
         private static void AssertPosition(Vector2 expected, RectTransform content)

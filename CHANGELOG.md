@@ -13,6 +13,7 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 ### Added
 - `ThreeStatesToggle` now has its own pre-constructed sample, like the base `Toggle`. You can add it to the scene from the `UI Canvas > Three States Toggle` context menu.
 - Not a big feature, but if you are planning to build your own runtime controls and use `Mane Style` editors, you can reuse the pre-built foldable `Interaction` block (`UIInteractionControl`: Interactable, Transition and `UINavigationControl`) in your `Selectable` inspectors. `UINavigationControl` can also be used on its own.
+- `ScrollRect` can now scroll to a child with an animation: `ScrollTo`, `ScrollXTo` and `ScrollYTo` move to the same position as the matching `Snap` methods, with an `AnimationCurve` easing (for example from `Easing`) and a speed, so the duration follows the distance, kept within optional duration limits (0.25–0.8 seconds by default). They return the coroutine to wait for, stop at the content edges, and stop when the content is dragged or snapped. `StopScrolling` stops them.
 - Added **Create → Scripting → UIBehaviour** and **Create → Scripting → ManeUIBehaviour**. They create those scripts the same way as the built-in scripting templates, with an empty class body.
 
 ### Changed
