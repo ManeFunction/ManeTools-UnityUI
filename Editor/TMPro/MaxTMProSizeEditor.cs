@@ -1,7 +1,6 @@
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Mane.Unity.UI.Editor
@@ -14,26 +13,10 @@ namespace Mane.Unity.UI.Editor
     [CustomEditor(typeof(MaxTMProSize), true)]
     public class MaxTMProSizeEditor : ManeEditor
     {
-        private VisualElement _compactWidth;
-
         protected override void BuildInspector(VisualElement root)
         {
-            _compactWidth = root.Q<PropertyField>("compactWidthField");
-            if (_compactWidth == null)
-            {
-                Debug.LogError("MaxTMProSizeEditor UXML is missing expected elements.");
-                return;
-            }
-
             SerializedProperty maxWidth = serializedObject.FindProperty("_maxWidth");
-            root.TrackPropertyValue(maxWidth, _ => UpdateVisibility());
-            UpdateVisibility();
-        }
-
-        private void UpdateVisibility()
-        {
-            serializedObject.UpdateIfRequiredOrScript();
-            _compactWidth.SetVisible(serializedObject.FindProperty("_maxWidth").floatValue > 0f);
+            root.Require<PropertyField>("compactWidthField")?.ShowWhen(() => maxWidth.floatValue > 0f, maxWidth);
         }
     }
 }

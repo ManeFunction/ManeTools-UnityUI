@@ -1,6 +1,5 @@
 using Mane.Unity.Editor;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Mane.Unity.UI.Editor
@@ -14,14 +13,7 @@ namespace Mane.Unity.UI.Editor
     {
         protected override void BuildInspector(VisualElement root)
         {
-            UIInteractionControl interaction = root.Q<UIInteractionControl>("interaction");
-            if (interaction == null)
-            {
-                Debug.LogError("ThreeStatesToggleEditor UXML is missing expected elements.");
-                return;
-            }
-
-            interaction.Bind(serializedObject);
+            root.Require<UIInteractionControl>("interaction")?.Bind(serializedObject);
         }
     }
 }

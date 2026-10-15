@@ -19,7 +19,6 @@ namespace Mane.Unity.UI.Editor
 
         private VisualElement _root;
         private VisualElement _colorsContainer;
-        private VisualElement _emptyBox;
         private VisualElement _schemeTracker;
         private int _builtColorCount = -1;
         private bool _rebuilding;
@@ -33,22 +32,20 @@ namespace Mane.Unity.UI.Editor
         protected override void BuildInspector(VisualElement root)
         {
             _root = root;
-
-            _emptyBox = InfoBoxDrawer.Create(
-                "Assign a Color Scheme to map its colors to graphics.",
-                InfoBoxType.Warning);
-            _emptyBox.name = "emptyBox";
-            root.Insert(0, _emptyBox);
-
-            _colorsContainer = root.Q<VisualElement>("colorsContainer");
+            _colorsContainer = root.Require<VisualElement>("colorsContainer");
             if (_colorsContainer == null)
-            {
-                Debug.LogError("ColorSchemeControllerEditor UXML is missing expected elements.");
                 return;
-            }
 
             SerializedProperty schemeProp =
                 serializedObject.FindProperty(ColorSchemeController.ColorSchemePropertyName);
+
+            VisualElement emptyBox = InfoBoxDrawer.Create(
+                "Assign a Color Scheme to map its colors to graphics.",
+                InfoBoxType.Warning);
+            emptyBox.name = "emptyBox";
+            root.Insert(0, emptyBox);
+            emptyBox.ShowWhen(() => schemeProp.objectReferenceValue is not ColorScheme, schemeProp);
+            _colorsContainer.ShowWhen(() => schemeProp.objectReferenceValue is ColorScheme, schemeProp);
 
             RebuildColors();
             root.TrackPropertyValue(schemeProp, _ => RebuildColors());
@@ -76,13 +73,8 @@ namespace Mane.Unity.UI.Editor
                 if (scheme == null)
                 {
                     _builtColorCount = 0;
-                    _emptyBox.style.display = DisplayStyle.Flex;
-                    _colorsContainer.style.display = DisplayStyle.None;
                     return;
                 }
-
-                _emptyBox.style.display = DisplayStyle.None;
-                _colorsContainer.style.display = DisplayStyle.Flex;
 
                 SerializedProperty graphic =
                     serializedObject.FindProperty(ColorSchemeController.GraphicPropertyName);
@@ -132,7 +124,6 @@ namespace Mane.Unity.UI.Editor
             {
                 _rebuilding = false;
                 RebindSchemeLengthTracking();
-                ManeEditorStyles.RefreshFieldLayout(_root);
             }
         }
 

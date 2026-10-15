@@ -1,7 +1,6 @@
 using Mane.Unity.Editor;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
@@ -31,9 +30,6 @@ namespace Mane.Unity.UI.Editor
         private readonly VisualElement _spriteWarning;
         private readonly UINavigationControl _navigation;
 
-        private SerializedObject _serializedObject;
-        private SerializedProperty _transitionProperty;
-        private SerializedProperty _targetGraphicProperty;
         private bool _bound;
 
         /// <summary>
@@ -100,13 +96,13 @@ namespace Mane.Unity.UI.Editor
         /// <summary>
         /// Binds all fields to the standard <see cref="Selectable"/> serialized properties
         /// (<c>m_Interactable</c>, <c>m_Transition</c>, <c>m_Navigation</c>, ...).
+        /// The transition fields and warnings follow the first object it is bound to.
         /// </summary>
         public void Bind(SerializedObject serializedObject)
         {
             if (serializedObject == null)
                 return;
 
-            _serializedObject = serializedObject;
             _interactable.BindField(serializedObject, "m_Interactable");
             _transition.BindField(serializedObject, "m_Transition");
             _targetGraphic.BindField(serializedObject, "m_TargetGraphic");
@@ -115,37 +111,25 @@ namespace Mane.Unity.UI.Editor
             _animationTriggers.BindField(serializedObject, "m_AnimationTriggers");
             _navigation.Bind(serializedObject);
 
-            _transitionProperty = serializedObject.FindProperty("m_Transition");
-            _targetGraphicProperty = serializedObject.FindProperty("m_TargetGraphic");
-            if (_transitionProperty == null || _targetGraphicProperty == null)
-                return;
-
-            UpdateTransitionVisibility();
-
-            if (_bound)
+            SerializedProperty transition = serializedObject.FindProperty("m_Transition");
+            SerializedProperty targetGraphic = serializedObject.FindProperty("m_TargetGraphic");
+            if (_bound || transition == null || targetGraphic == null)
                 return;
 
             _bound = true;
-            this.TrackPropertyValue(_transitionProperty, _ => UpdateTransitionVisibility());
-            this.TrackPropertyValue(_targetGraphicProperty, _ => UpdateTransitionVisibility());
-        }
+            _targetGraphic.ShowWhen(() => Is(Selectable.Transition.ColorTint) || Is(Selectable.Transition.SpriteSwap),
+                transition);
+            _colors.ShowWhen(() => Is(Selectable.Transition.ColorTint), transition);
+            _spriteState.ShowWhen(() => Is(Selectable.Transition.SpriteSwap), transition);
+            _animationTriggers.ShowWhen(() => Is(Selectable.Transition.Animation), transition);
+            _colorWarning.ShowWhen(() => Is(Selectable.Transition.ColorTint)
+                                         && targetGraphic.objectReferenceValue is not Graphic,
+                transition, targetGraphic);
+            _spriteWarning.ShowWhen(() => Is(Selectable.Transition.SpriteSwap)
+                                          && targetGraphic.objectReferenceValue is not Image,
+                transition, targetGraphic);
 
-        private void UpdateTransitionVisibility()
-        {
-            _serializedObject.UpdateIfRequiredOrScript();
-            Selectable.Transition transition = (Selectable.Transition)_transitionProperty.enumValueIndex;
-            Graphic graphic = _targetGraphicProperty.objectReferenceValue as Graphic;
-
-            bool colorTint = transition == Selectable.Transition.ColorTint;
-            bool spriteSwap = transition == Selectable.Transition.SpriteSwap;
-            bool animation = transition == Selectable.Transition.Animation;
-
-            _targetGraphic.SetVisible(colorTint || spriteSwap);
-            _colors.SetVisible(colorTint);
-            _spriteState.SetVisible(spriteSwap);
-            _animationTriggers.SetVisible(animation);
-            _colorWarning.SetVisible(colorTint && graphic == null);
-            _spriteWarning.SetVisible(spriteSwap && graphic is not Image);
+            bool Is(Selectable.Transition value) => (Selectable.Transition)transition.enumValueIndex == value;
         }
     }
 }
