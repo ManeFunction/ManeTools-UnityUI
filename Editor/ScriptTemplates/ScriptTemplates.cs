@@ -1,7 +1,5 @@
-using System.IO;
 using UnityEditor;
-using UnityEngine;
-using PackageInfo = UnityEditor.PackageManager.PackageInfo;
+using Templates = Mane.Unity.Editor.ScriptTemplates;
 
 namespace Mane.Unity.UI.Editor
 {
@@ -13,31 +11,11 @@ namespace Mane.Unity.UI.Editor
 
         [MenuItem("Assets/Create/Scripting/UIBehaviour", false, UIBehaviourPriority)]
         private static void CreateUIBehaviour() =>
-            CreateScript("UIBehaviour.cs.txt", "NewUIBehaviourScript.cs");
+            Templates.CreateScript(typeof(ScriptTemplates).Assembly, "UIBehaviour.cs.txt", "NewUIBehaviourScript.cs");
 
         [MenuItem("Assets/Create/Scripting/ManeUIBehaviour", false, ManeUIBehaviourPriority)]
         private static void CreateManeUIBehaviour() =>
-            CreateScript("ManeUIBehaviour.cs.txt", "NewManeUIBehaviourScript.cs");
-
-        private static void CreateScript(string templateFileName, string defaultFileName)
-        {
-            string templatePath = TemplatePath(templateFileName);
-            if (templatePath == null)
-                return;
-
-            ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, defaultFileName);
-        }
-
-        private static string TemplatePath(string templateFileName)
-        {
-            PackageInfo packageInfo = PackageInfo.FindForAssembly(typeof(ScriptTemplates).Assembly);
-            if (packageInfo == null)
-            {
-                Debug.LogError("Could not resolve the Mane Tools for Unity UI package path for script templates.");
-                return null;
-            }
-
-            return Path.Combine(packageInfo.resolvedPath, "Editor", "ScriptTemplates", templateFileName);
-        }
+            Templates.CreateScript(typeof(ScriptTemplates).Assembly, "ManeUIBehaviour.cs.txt",
+                "NewManeUIBehaviourScript.cs");
     }
 }
