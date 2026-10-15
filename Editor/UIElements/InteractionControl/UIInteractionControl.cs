@@ -74,12 +74,12 @@ namespace Mane.Unity.UI.Editor
             _navigation = new UINavigationControl();
             _foldout.Add(_navigation);
 
-            SetVisible(_targetGraphic, false);
-            SetVisible(_colors, false);
-            SetVisible(_spriteState, false);
-            SetVisible(_animationTriggers, false);
-            SetVisible(_colorWarning, false);
-            SetVisible(_spriteWarning, false);
+            _targetGraphic.SetVisible(false);
+            _colors.SetVisible(false);
+            _spriteState.SetVisible(false);
+            _animationTriggers.SetVisible(false);
+            _colorWarning.SetVisible(false);
+            _spriteWarning.SetVisible(false);
         }
 
         /// <summary>
@@ -107,12 +107,12 @@ namespace Mane.Unity.UI.Editor
                 return;
 
             _serializedObject = serializedObject;
-            BindField(_interactable, serializedObject, "m_Interactable");
-            BindField(_transition, serializedObject, "m_Transition");
-            BindField(_targetGraphic, serializedObject, "m_TargetGraphic");
-            BindField(_colors, serializedObject, "m_Colors");
-            BindField(_spriteState, serializedObject, "m_SpriteState");
-            BindField(_animationTriggers, serializedObject, "m_AnimationTriggers");
+            _interactable.BindField(serializedObject, "m_Interactable");
+            _transition.BindField(serializedObject, "m_Transition");
+            _targetGraphic.BindField(serializedObject, "m_TargetGraphic");
+            _colors.BindField(serializedObject, "m_Colors");
+            _spriteState.BindField(serializedObject, "m_SpriteState");
+            _animationTriggers.BindField(serializedObject, "m_AnimationTriggers");
             _navigation.Bind(serializedObject);
 
             _transitionProperty = serializedObject.FindProperty("m_Transition");
@@ -140,27 +140,12 @@ namespace Mane.Unity.UI.Editor
             bool spriteSwap = transition == Selectable.Transition.SpriteSwap;
             bool animation = transition == Selectable.Transition.Animation;
 
-            SetVisible(_targetGraphic, colorTint || spriteSwap);
-            SetVisible(_colors, colorTint);
-            SetVisible(_spriteState, spriteSwap);
-            SetVisible(_animationTriggers, animation);
-            SetVisible(_colorWarning, colorTint && graphic == null);
-            SetVisible(_spriteWarning, spriteSwap && graphic is not Image);
+            _targetGraphic.SetVisible(colorTint || spriteSwap);
+            _colors.SetVisible(colorTint);
+            _spriteState.SetVisible(spriteSwap);
+            _animationTriggers.SetVisible(animation);
+            _colorWarning.SetVisible(colorTint && graphic == null);
+            _spriteWarning.SetVisible(spriteSwap && graphic is not Image);
         }
-
-        private static void BindField(PropertyField field, SerializedObject serializedObject, string path)
-        {
-            SerializedProperty property = serializedObject.FindProperty(path);
-            if (property == null)
-            {
-                Debug.LogError($"UIInteractionControl could not find '{path}'.");
-                return;
-            }
-
-            field.BindProperty(property);
-        }
-
-        private static void SetVisible(VisualElement element, bool visible) =>
-            element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }
