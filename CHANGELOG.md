@@ -22,6 +22,7 @@ Initial release of the extracted Unity UI controls and extensions. Types were mo
 - `ManeBehaviour` was renamed to `ManeUIBehaviour` and left exclusively for easy access to `rectTransform` from your UI components.
 - `MaxTMProSize` can now fit the width to the widest wrapped line when the text exceeds `Max Width`, instead of always using the full `Max Width`, so a word that wraps to the next line no longer leaves an empty gap on the right. It is controlled by the new `Compact Width` option (off by default), which is shown only while `Max Width` is set.
 - `MaxTMProSize` no longer needs a `LayoutElement`. It is a layout element itself, with layout priority 2, so it no longer overwrites values set on a `LayoutElement`, does not dirty scenes in edit mode, and its caps go away when it is disabled or removed.
+- The navigation mode in `UINavigationControl` (and the Interaction block) is now Unity's own flags popup, as in the built-in `Selectable` inspector, instead of a custom popup. The `NavigationModeField` element was removed.
 
 ### Fixed
 - `ThreeStatesToggle.StateValueChanged -= handler` did not remove the handler.
