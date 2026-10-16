@@ -77,7 +77,7 @@ namespace Mane.Unity.UI
                 
                 _state = state;
                 UpdateIsOnFromState();
-                PlayUndefinedEffect(transition == Transition.None);
+                PlayUndefinedEffect(toggleTransition == ToggleTransition.None);
                 onStateValueChanged.Invoke(value);
             }
         }
@@ -103,7 +103,19 @@ namespace Mane.Unity.UI
             UpdateIsOnFromState();
             PlayUndefinedEffect(true);
         }
-        
+
+#if UNITY_EDITOR
+        // An inspector edit writes the serialized state directly, bypassing State. Shows it right away,
+        // without raising onValueChanged from OnValidate.
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            SetIsOnWithoutNotify(_state == ToggleState.On);
+            PlayUndefinedEffect(true);
+        }
+#endif
+
         private void PlayUndefinedEffect(bool instant)
         {
             ProcessGraphic(undefinedGraphic, ToggleState.Undefined);
