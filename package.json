@@ -6,6 +6,9 @@
   "unity": "6000.0",
   "unityRelease": "81f1",
   "license": "MIT",
+  "documentationUrl": "https://github.com/ManeFunction/ManeTools-UnityUI/wiki",
+  "changelogUrl": "https://github.com/ManeFunction/ManeTools-UnityUI/blob/master/CHANGELOG.md",
+  "licensesUrl": "https://github.com/ManeFunction/ManeTools-UnityUI/blob/master/LICENSE",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ManeFunction/ManeTools-UnityUI.git"
