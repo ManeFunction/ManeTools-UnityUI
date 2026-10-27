@@ -151,7 +151,7 @@ namespace Mane.Unity.UI
                 RefreshColor(i);
         }
 
-        private void SetColorSchemeWithoutRefresh(ColorScheme colorScheme) =>
+        internal void SetColorSchemeWithoutRefresh(ColorScheme colorScheme) =>
             _colorScheme = colorScheme;
 
         private void RefreshColor(int i)
