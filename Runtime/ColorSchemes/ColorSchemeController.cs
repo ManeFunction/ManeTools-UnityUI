@@ -11,9 +11,9 @@ namespace Mane.Unity.UI
     /// Slot i maps to scheme color i.
     /// </summary>
     [AddComponentMenu("Mane Tools/UI/Color Scheme Controller")]
-    public class ColorSchemeController : UIBehaviour
+    public sealed class ColorSchemeController : UIBehaviour
     {
-        [SerializeField] protected GraphicCollection[] _graphic;
+        [SerializeField] private GraphicCollection[] _graphic;
         [SerializeField] private ColorScheme _colorScheme;
 
         private Coroutine _animation;
@@ -138,12 +138,6 @@ namespace Mane.Unity.UI
                     graphic.color = color;
             }
         }
-        
-        /// <summary>
-        /// Assigns the palette without applying colors. Used while animating.
-        /// </summary>
-        public void SetColorSchemeWithoutRefresh(ColorScheme colorScheme) => 
-            _colorScheme = colorScheme;
 
         /// <summary>
         /// Applies the current scheme colors to all graphic slots.
@@ -156,6 +150,9 @@ namespace Mane.Unity.UI
             for (int i = 0; i < _graphic.Length; i++)
                 RefreshColor(i);
         }
+
+        private void SetColorSchemeWithoutRefresh(ColorScheme colorScheme) =>
+            _colorScheme = colorScheme;
 
         private void RefreshColor(int i)
         {
