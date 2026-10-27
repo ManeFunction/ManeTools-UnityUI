@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [2.0.0-preview.1] - 2026-09-01
+## [2.0.0-preview.1] - 2026-10-27
 Initial release of the extracted Unity UI controls and extensions. Types were moved and refactored out of the legacy Unity-coupled module. Versioning starts at 2.0.0 to mark that split; this is not a new project, it is just a fresh start.
 
 ### Added
