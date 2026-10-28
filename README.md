@@ -2,9 +2,15 @@
 
 Controls and extensions for Unity UI (`uGUI`).
 
-The package is supported starting from **Unity 6.0.81** (6000.0.81f1) and depends on [ManeTools-Unity](https://github.com/ManeFunction/ManeTools-Unity.git).
+The package is supported from **Unity 6.0.81** (6000.0.81f1) and has dependencies managed automatically with `OpenUPM`. More information is in [Dependencies](#dependencies) section.
 
 Add components from **Add Component → Mane Tools → UI**.
+
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Why Preview?](#why-preview)
+- [Repository info](#repository-info)
 
 ## Features
 
@@ -16,6 +22,13 @@ Add components from **Add Component → Mane Tools → UI**.
 - `UICanvasTools` helpers that ease working with UI layouts.
 - Script creation menus for standard `UIBehaviour` and custom `ManeUIBehaviour`.
 - NUnit coverage for most of the package.
+
+## Dependencies
+
+![](https://raw.githubusercontent.com/wiki/ManeFunction/ManeTools-UnityUI/Images/dependencies.png)
+
+- [ManeTools-Unity](https://github.com/ManeFunction/ManeTools-Unity.git) and [ManeTools-dotNET](https://github.com/ManeFunction/ManeTools-dotNet.git) are required, and `OpenUPM` installs both.
+- [Unity UI](https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/index.html) asset, including `TextMesh Pro`, is required too.
 
 ## Installation
 
