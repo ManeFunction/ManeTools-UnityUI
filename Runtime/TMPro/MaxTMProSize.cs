@@ -84,6 +84,12 @@ namespace Mane.Unity.UI
         float ILayoutElement.flexibleHeight => -1f;
         int ILayoutElement.layoutPriority => LayoutPriority;
 
+#if UNITY_6000_6_OR_NEWER
+        // uGUI 2.6 max sizes. Negative is ignored, so a lower-priority LayoutElement max still applies.
+        float ILayoutElement.maxWidth => -1f;
+        float ILayoutElement.maxHeight => -1f;
+#endif
+
 
 #if UNITY_EDITOR
         protected void Reset()
