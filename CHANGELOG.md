@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Releases are signed with a Unity package signature, so the Package Manager in Unity 6.3 and newer no longer warns that the package is unsigned. Versions up to 2.0.0-preview.1 stay unsigned.
 
 ## [2.0.0-preview.1] - 2026-10-28
 Initial release of the extracted Unity UI controls and extensions. Types were moved and refactored out of the legacy Unity-coupled module. Versioning starts at 2.0.0 to mark that split; this is not a new project, it is just a fresh start.
