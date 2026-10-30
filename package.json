@@ -1,6 +1,6 @@
 {
   "name": "com.manefunction.tools-unity-ui",
-  "version": "2.0.0-preview.1",
+  "version": "2.0.0-preview.2",
   "displayName": "Mane Tools for Unity UI",
   "description": "Some controls and extensions for uGUI package.\n\nAll extensions can be found under 'Mane.Unity.UI' namespace.\n\nAll components are under Add 'Component -> Mane Tools -> UI' section.",
   "unity": "6000.0",
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "com.unity.ugui": "2.0.0",
-    "com.manefunction.tools-dotnet": "2.0.0-preview.2",
-    "com.manefunction.tools-unity": "2.0.0-preview.1"
+    "com.manefunction.tools-dotnet": "2.0.0-preview.3",
+    "com.manefunction.tools-unity": "2.0.0-preview.2"
   },
   "keywords": [
     "unity",
